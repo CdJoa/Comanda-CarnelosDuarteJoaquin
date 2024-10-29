@@ -16,9 +16,11 @@ class AccesoDatos
             if($dbType === "pgsql"){
                 $this->objetoPDO = new PDO('pgsql:host='.$_ENV['POSTGRES_HOST'].';dbname='.$_ENV['POSTGRES_DATABASE'], $_ENV['POSTGRES_USER'], $_ENV['POSTGRES_PASSWORD'], 
                 array(PDO::ATTR_EMULATE_PREPARES => false, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-
+                
                 // Postgress da error si se configura el charset.
             }
+            
+            
 
         } catch (PDOException $e) {
             print "Error: " . $e->getMessage();
@@ -48,4 +50,4 @@ class AccesoDatos
     {
         trigger_error('ERROR: La clonación de este objeto no está permitida', E_USER_ERROR);
     }
-}
+}?> 
