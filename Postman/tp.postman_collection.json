@@ -1,0 +1,209 @@
+{
+	"info": {
+		"_postman_id": "b287e983-5b1f-4de7-8904-9091f7760a12",
+		"name": "tp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "37957415"
+	},
+	"item": [
+		{
+			"name": "Usuarios",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": "http://localhost:666/usuarios"
+			},
+			"response": []
+		},
+		{
+			"name": "productos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:666/productos"
+			},
+			"response": []
+		},
+		{
+			"name": "Traer1Producto",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:666/productos/cocacola"
+			},
+			"response": []
+		},
+		{
+			"name": "Traer1Usario",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:666/usuarios/paparazi"
+			},
+			"response": []
+		},
+		{
+			"name": "altaUsuarios",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{       \r\n    \"usuario\": \"paparaz2i\",\r\n    \"clave\": \"gol\",\r\n    \"rol\": \"mozo\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:666/usuarios"
+			},
+			"response": []
+		},
+		{
+			"name": "altaProducto",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{       \r\n    \"nombre\": \"heineken 2lts\",\r\n    \"cantidad\": 1000,\r\n    \"precioUnidad\": 20,\r\n    \"tipo\": \"bebida\",\r\n    \"seccion\" : \"barra\",\r\n    \"tiempo\": 2\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:666/productos"
+			},
+			"response": []
+		},
+		{
+			"name": "modificarUsuario",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{       \r\n    \"usuario\": \"ozil\",\r\n    \"clave\": \"ladygaga\",\r\n    \"rol\": \"mozo\"\r\n}\r\n\r\n ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:666/usuarios/?id=12",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"usuarios",
+						""
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "12"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modificarProducto",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n            \"nombre\": \"cocacola light\",\r\n            \"cantidad\": 1000,\r\n            \"precioUnidad\": \"10.00\",\r\n            \"tipo\": \"bebida\",\r\n            \"tiempo\": 2\r\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:666/productos/?id=3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"productos",
+						""
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BorrarUsuario",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{       \r\n    \"usuarioId\": \"11\",\r\n\r\n}\r\n\r\n \r\n ",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:666/usuarios/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"usuarios",
+						""
+					],
+					"query": [
+						{
+							"key": "usuarioId",
+							"value": "11",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BorrarProducto",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:666/productos/4"
+			},
+			"response": []
+		}
+	]
+}
