@@ -1,0 +1,22 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+CREATE TABLE productos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    cantidad INT NOT NULL,
+    precioUnidad DECIMAL(10,2) NOT NULL,
+    tipo  VARCHAR(255)  NOT NULL;
+    seccion  VARCHAR(255)  NOT NULL;
+
+    tiempo INT NOT NULL
+    
+);
+
+
+
+ALTER TABLE `productos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+COMMIT;

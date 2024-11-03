@@ -6,7 +6,6 @@ class Usuario
     public $usuario;
     public $clave;
     public $rol;
-    public $fechaBaja;
 
     public function crearUsuario()
     {
@@ -25,7 +24,7 @@ class Usuario
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, usuario, clave,rol,fechaBaja FROM usuarios");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, usuario, clave,rol FROM usuarios");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
@@ -34,7 +33,7 @@ class Usuario
     public static function obtenerUsuario($usuario)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, usuario, clave, rol,fechaBaja FROM usuarios WHERE usuario = :usuario");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, usuario, clave, rol FROM usuarios WHERE usuario = :usuario");
         $consulta->bindValue(':usuario', $usuario, PDO::PARAM_STR);
         
         $consulta->execute();
@@ -58,11 +57,12 @@ class Usuario
 
     public static function borrarUsuario($id)
     {
+
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("DELETE FROM usuarios WHERE id = :id");
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
-
         $consulta->execute();
+        
     }
 
 }

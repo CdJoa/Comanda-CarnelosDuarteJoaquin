@@ -16,6 +16,7 @@ require_once __DIR__ . '/db/AccesoDatos.php';
 // require_once './middlewares/Logger.php';
 
 require_once __DIR__ . '/controllers/UsuarioController.php';
+require_once __DIR__ . '/controllers/ProductoController.php';
 
 // Load ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
@@ -32,13 +33,24 @@ $app->addBodyParsingMiddleware();
 // Routes
 $app->group('/usuarios', function (RouteCollectorProxy $group) {
     $group->put('/', \UsuarioController::class . ':ModificarUno');
-    $group->delete('/', \UsuarioController::class . ':ModificarUno');
+    $group->delete('/{id}', \UsuarioController::class . ':BorrarUno');
 
     $group->get('[/]', \UsuarioController::class . ':TraerTodos');
     $group->get('/{usuario}', \UsuarioController::class . ':TraerUno');
     $group->post('[/]', \UsuarioController::class . ':CargarUno');
     
   });
+
+$app->group('/productos', function (RouteCollectorProxy $group) {
+    $group->put('/', \ProductoController::class . ':ModificarUno');
+    $group->delete('/{id}', \ProductoController::class . ':BorrarUno');
+
+    $group->get('[/]', \ProductoController::class . ':TraerTodos');
+    $group->get('/{nombre}', \ProductoController::class . ':TraerUno');
+    $group->post('[/]', \ProductoController::class . ':CargarUno');
+    
+  });
+
 
 $app->get('[/]', function (Request $request, Response $response) {    
     $payload = json_encode(array("mensaje" => "Slim Framework 4 PHP"));
