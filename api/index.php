@@ -18,6 +18,7 @@ require_once __DIR__ . '/db/AccesoDatos.php';
 require_once __DIR__ . '/controllers/UsuarioController.php';
 require_once __DIR__ . '/controllers/ProductoController.php';
 require_once __DIR__ . '/controllers/MesaController.php';
+require_once __DIR__ . '/controllers/PedidoController.php';
 
 
 // Load ENV
@@ -63,6 +64,12 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
     
   });
 
+
+  $app->group('/pedidos', function (RouteCollectorProxy $group) {
+    $group->post('[/]', \PedidoController::class . ':CargarUno');
+    $group->get('[/]', \PedidoController::class . ':TraerTodos');
+
+  });
 
 $app->get('[/]', function (Request $request, Response $response) {    
     $payload = json_encode(array("mensaje" => "Slim Framework 4 PHP"));
