@@ -10,7 +10,6 @@ CREATE TABLE productos (
     precioUnidad DECIMAL(10,2) NOT NULL,
     tipo  VARCHAR(255)  NOT NULL;
     seccion  VARCHAR(255)  NOT NULL;
-
     tiempo INT NOT NULL
     
 );

@@ -7,7 +7,7 @@ CREATE TABLE mesas (
     id INT AUTO_INCREMENT PRIMARY KEY,
     estado VARCHAR(255) NOT NULL,
     codigoMesa  VARCHAR(255)  NOT NULL,
-    id_pedido INT NULL,   
+    codigo_pedido INT NULL,   
 );
 
 ALTER TABLE `mesas`

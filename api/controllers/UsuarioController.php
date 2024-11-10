@@ -12,25 +12,30 @@ class UsuarioController extends Usuario implements IApiUsable
         $clave = $parametros['clave'];
         $rol = $parametros['rol'];
 
-
-        // Creamos el usuario
         $usr = new Usuario();
         $usr->usuario = $usuario;
         $usr->clave = $clave;
         $usr->rol = $rol;
 
-        $usr->crearUsuario();
-
-        $payload = json_encode(array("mensaje" => "Usuario creado con exito"));
-
-        $response->getBody()->write($payload);
-        return $response
-          ->withHeader('Content-Type', 'application/json');
+        try {
+            $usr->crearUsuario();
+            $payload = json_encode(array("mensaje" => "Usuario creado con éxito"));
+            $response->getBody()->write($payload);
+            return $response
+                ->withHeader('Content-Type', 'application/json')
+                ->withStatus(201);
+        } catch (Exception $e) {
+            $payload = json_encode(array("error" => $e->getMessage()));
+            $response->getBody()->write($payload);
+            return $response
+                ->withHeader('Content-Type', 'application/json')
+                ->withStatus(400);
+        }
     }
+
 
     public function TraerUno($request, $response, $args)
     {
-        // Buscamos usuario por nombre
         $usr = $args['usuario'];
         $usuario = Usuario::obtenerUsuario($usr);
         $payload = json_encode($usuario);
@@ -56,7 +61,7 @@ class UsuarioController extends Usuario implements IApiUsable
 
 
         $usuario = new Usuario();
-        $usuario->id = $id; // El ID se obtiene de los parámetros de consulta
+        $usuario->id = $id; 
         $usuario->usuario = $parametros['usuario'];
         $usuario->clave = $parametros['clave'];
         $usuario->rol = $parametros['rol'];

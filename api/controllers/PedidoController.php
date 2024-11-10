@@ -5,23 +5,48 @@ require_once __DIR__ . '/../interfaces/IApiUsable.php';
 class PedidoController extends Pedido implements IApiUsable
 {
     public function CargarUno($request, $response, $args)
-    {
-        $parametros = $request->getParsedBody();
+{
+    $parametros = $request->getParsedBody();
 
-        $nombreCliente = $parametros['nombreCliente'];
-            $pedido = new pedido();
-            $pedido->nombreCliente = $nombreCliente;
-            $pedido->crearpedido();
-            if ($pedido) {
-                $payload = json_encode(array("mensaje" => "Se creo pedido con exito"));
-            } else {
-                $payload = json_encode(array("mensaje" => "Error al crear la pedido"));
-            }
 
-            $response->getBody()->write($payload);
+    $nombreCliente = $parametros['nombreCliente'];
+    $lista = $parametros['listaProductos'];
 
+    if (empty($lista)) {
+        $payload = json_encode(array("mensaje" => "No se proporcionaron productos"));
+        $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
     }
+
+    foreach ($lista as $productos) {
+        $nombreProducto = $productos['nombre'];
+        
+        $producto = Producto::obtenerProducto($nombreProducto);
+
+        if (!$producto) {
+            $payload = json_encode(array("mensaje" => "Producto '$nombreProducto' no encontrado"));
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+    }
+
+    $pedido = new Pedido();
+    $pedido->nombreCliente = $nombreCliente;
+    $pedido->listaProductos = $lista;
+
+    try {
+        $pedido->crearPedido($lista);
+
+        $payload = json_encode(array("mensaje" => "Se creó el pedido con éxito"));
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
+    } catch (Exception $e) {
+        $payload = json_encode(array("error" => $e->getMessage()));
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+    }
+}
+
 
     public function TraerUno($request, $response, $args)
     {

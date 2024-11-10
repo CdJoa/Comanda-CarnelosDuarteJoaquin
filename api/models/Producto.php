@@ -14,7 +14,8 @@ class Producto
     public function crearProducto()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO productos (nombre, cantidad, precioUnidad, tipo,seccion, tiempo) VALUES (:nombre, :cantidad, :precioUnidad, :tipo,:seccion :tiempo)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO productos (nombre, cantidad, precioUnidad, tiempo, tipo, seccion) 
+                                                        VALUES (:nombre, :cantidad, :precioUnidad, :tiempo, :tipo, :seccion)");
         $consulta->bindValue(':nombre', $this->nombre, PDO::PARAM_STR);
         $consulta->bindValue(':cantidad', $this->cantidad, PDO::PARAM_INT);
         $consulta->bindValue(':precioUnidad', $this->precioUnidad, PDO::PARAM_INT);
@@ -27,15 +28,20 @@ class Producto
         return $objAccesoDatos->obtenerUltimoId();
     }
 
-
-
-
-
-
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT id, nombre,cantidad,precioUnidad,tipo,seccion,tiempo FROM productos");
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'producto');
+    }
+
+    public static function obtenerProductosPorSeccion($seccion)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, nombre,cantidad,precioUnidad,tipo,seccion,tiempo FROM productos WHERE seccion = :seccion");
+        $consulta->bindValue(':seccion', $seccion, PDO::PARAM_STR);
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'producto');
@@ -48,10 +54,8 @@ class Producto
         $consulta->bindValue(':nombre', $nombre, PDO::PARAM_STR);
         $consulta->execute();
 
-        return $consulta->fetch(PDO::FETCH_ASSOC); // Retorna un solo producto como un array asociativo
+        return $consulta->fetch(PDO::FETCH_ASSOC); 
     }
-
-
 
     public static function modificarProducto($producto)
     {
@@ -70,7 +74,6 @@ class Producto
         $consulta->execute();
     }
 
-
     public static function borrarProducto($id)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -79,6 +82,5 @@ class Producto
 
         $consulta->execute();
     }
-
 }
 ?>

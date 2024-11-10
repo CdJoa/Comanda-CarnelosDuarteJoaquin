@@ -9,56 +9,79 @@ class Pedido{
     public $precio; 
     public $listaProductos = array();
 
-    public function crearPedido()
+    public function crearPedido($listaProductos)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-
+    
         do {
             $this->codigoPedido = Pedido::crearCodigo(); 
         } while (Pedido::existeCodigoPedido($this->codigoPedido)); 
-
-
-        Mesa::IngresarIDPedidoCambiarEstado($this->id);
-
-        $this->codigoMesa =  Mesa::ObtenerCodigoMesaPorIDPedido($this->id);
-
-        $this->estado = 'abierta';
+    
+        $this->codigoMesa = Mesa::obtenerPrimeraMesaAbierta(); 
+    
+        if ($this->codigoMesa === false) {
+            throw new Exception("No hay mesas disponibles.");
+        }
+    
+        $this->estado = 'pendiente';
         $this->tiempoEstimado = 0;
         $this->precio = 0;
-
-
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos ( codigoPedido,nombreCliente,codigoMesa,estado,tiempoEstimado,precio) VALUES (:codigoPedido,:nombreCliente,:codigoMesa,:estado,:tiempoEstimado,:precio)");
+    
+        $productosJson = json_encode($listaProductos);
+    
+        error_log("Lista de productos en JSON: " . $productosJson);
+    
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (codigoPedido, nombreCliente, estado, codigoMesa, tiempoEstimado, precio, listaProductos) VALUES (:codigoPedido, :nombreCliente, :estado, :codigoMesa, :tiempoEstimado, :precio, :listaProductos)");
         $consulta->bindValue(':nombreCliente', $this->nombreCliente, PDO::PARAM_STR);
         $consulta->bindValue(':codigoMesa', $this->codigoMesa, PDO::PARAM_STR);
         $consulta->bindValue(':estado', $this->estado, PDO::PARAM_STR);
         $consulta->bindValue(':tiempoEstimado', $this->tiempoEstimado, PDO::PARAM_INT);
         $consulta->bindValue(':precio', $this->precio, PDO::PARAM_INT);
         $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
-        
+        $consulta->bindValue(':listaProductos', $productosJson, PDO::PARAM_STR);
+    
         $consulta->execute();
-        return $objAccesoDatos->obtenerUltimoId();
-    }
-
-
-
-
-    public static function obtenerTodos()
-    {
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, codigoPedido, estado, nombreCliente, codigoMesa, tiempoEstimado, precio,listaProductos FROM pedidos");
-        $consulta->execute();
-
-        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Pedido');
-    }
-
-    public static function obtenerPedido($id){
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, codigoPedido, estado, nombreCliente, codigoMesa, tiempoEstimado, precio,listaProductos FROM pedidos");
-        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
-        $consulta->execute();
-        return $consulta->fetch(PDO::FETCH_ASSOC);
+    
+        $this->id = $objAccesoDatos->obtenerUltimoId();
+    
+        Mesa::IngresarCodigoPedidoCambiarEstado($this->codigoMesa, $this->codigoPedido);
+    
+        return $this->id;
     }
     
+
+        public static function obtenerTodos()
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, codigoPedido, estado, nombreCliente, codigoMesa, tiempoEstimado, precio, listaProductos FROM pedidos");
+        $consulta->execute();
+
+        $pedidos = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($pedidos as &$pedido) {
+            $pedido['listaProductos'] = json_decode($pedido['listaProductos'], true);
+        }
+
+        return $pedidos;
+    }
+
+
+    public static function obtenerPedido($id)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, codigoPedido, estado, nombreCliente, codigoMesa, tiempoEstimado, precio, listaProductos FROM pedidos WHERE id = :id");
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta->execute();
+
+        $pedido = $consulta->fetch(PDO::FETCH_ASSOC);
+
+        if ($pedido) {
+            $pedido['listaProductos'] = json_decode($pedido['listaProductos'], true);
+        }
+
+        return $pedido;
+    }
+
     public static function crearCodigo()
     {
         $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -78,8 +101,6 @@ class Pedido{
         return $consulta->fetchColumn() > 0; 
     }
 
-    
-    
     public static function modificarpedido($pedido)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -93,7 +114,6 @@ class Pedido{
         $consulta->execute();
     }
 
-
     public static function borrarpedido($id)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -101,6 +121,15 @@ class Pedido{
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
 
         $consulta->execute();
+    }
+
+    public static function asignarSeccionROl($listaProductos)
+    {
+        foreach ($listaProductos as &$producto) {
+            $producto['seccion'] = $seccion
+        }
+        return $listaProductos;
+
     }
 
 }
