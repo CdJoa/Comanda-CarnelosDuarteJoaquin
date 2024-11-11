@@ -10,7 +10,7 @@ class Usuario
     public function crearUsuario()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $this->estado = 'pendiente';
+        $this->estado = 'libre';
 
         $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO usuarios (usuario, clave, rol,estado) VALUES (:usuario, :clave, :rol,:estado)");
         $claveHash = password_hash($this->clave, PASSWORD_DEFAULT);
@@ -57,6 +57,14 @@ class Usuario
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
     }
+    public static function obtener1UsuarioLibresPorRol($rol) {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM usuarios WHERE rol = :rol AND estado = 'libre' LIMIT 1");
+        $consulta->bindValue(':rol', $rol, PDO::PARAM_STR);
+        $consulta->execute();
+        return $consulta->fetch(PDO::FETCH_ASSOC);
+    }
+
 
 
     public static function obtenerUsuario($usuario)
@@ -78,11 +86,11 @@ class Usuario
         $consulta->execute();
     }
 
-    public static function cambiarAEstadoLibre($id)
+    public static function cambiarAEstadoLibre($usuario)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("UPDATE usuarios SET estado = 'libre' WHERE id = :id");
-        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE usuarios SET estado = 'libre' WHERE usuario = :usuario");
+        $consulta->bindValue(':usuario', $usuario, PDO::PARAM_STR);
         $consulta->execute();
     }
 

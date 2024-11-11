@@ -4,50 +4,45 @@ require_once __DIR__ . '/../interfaces/IApiUsable.php';
 
 class PedidoController extends Pedido implements IApiUsable
 {
+
     public function CargarUno($request, $response, $args)
-{
-    $parametros = $request->getParsedBody();
-
-
-    $nombreCliente = $parametros['nombreCliente'];
-    $lista = $parametros['listaProductos'];
-
-    if (empty($lista)) {
-        $payload = json_encode(array("mensaje" => "No se proporcionaron productos"));
-        $response->getBody()->write($payload);
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    foreach ($lista as $productos) {
-        $nombreProducto = $productos['nombre'];
-        
-        $producto = Producto::obtenerProducto($nombreProducto);
-
-        if (!$producto) {
-            $payload = json_encode(array("mensaje" => "Producto '$nombreProducto' no encontrado"));
+    {
+        $parametros = $request->getParsedBody();
+    
+        $nombreCliente = $parametros['nombreCliente'];
+        $lista = $parametros['listaProductos'];
+    
+        if (empty($lista)) {
+            $payload = json_encode(array("mensaje" => "No se proporcionaron productos"));
             $response->getBody()->write($payload);
             return $response->withHeader('Content-Type', 'application/json');
         }
+    
+        try {
+            $listaConTrabajadores = Pedido::asignarTrabajador($lista);
+        } catch (Exception $e) {
+            $payload = json_encode(array("error" => $e->getMessage()));
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
+    
+        $pedido = new Pedido();
+        $pedido->nombreCliente = $nombreCliente;
+        $pedido->listaProductos = $listaConTrabajadores;
+        
+    
+        try {
+            $pedido->crearPedido($listaConTrabajadores);
+            $payload = json_encode(array("mensaje" => "Se creó el pedido con éxito", "pedido" => $pedido));
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
+        } catch (Exception $e) {
+            $payload = json_encode(array("error" => $e->getMessage()));
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
     }
-
-    $pedido = new Pedido();
-    $pedido->nombreCliente = $nombreCliente;
-    $pedido->listaProductos = $lista;
-
-    try {
-        $pedido->crearPedido($lista);
-
-        $payload = json_encode(array("mensaje" => "Se creó el pedido con éxito"));
-        $response->getBody()->write($payload);
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
-    } catch (Exception $e) {
-        $payload = json_encode(array("error" => $e->getMessage()));
-        $response->getBody()->write($payload);
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
-    }
-}
-
-
+    
     public function TraerUno($request, $response, $args)
     {
         $id = $args['id'] ?? null;
@@ -91,6 +86,139 @@ class PedidoController extends Pedido implements IApiUsable
         return $response->withHeader('Content-Type', 'application/json');
     }
 
+    public function ModificarEstadoProductoEnPedido($request, $response, $args)
+    {
+        $parametros = $request->getParsedBody();
+        $idPedido = $args['id'] ?? null;
+        $nombreProducto = $parametros['nombreProducto'] ?? null;
+        $estadoProducto = $parametros['estadoProducto'] ?? null;
+
+        if (!$idPedido || !$nombreProducto || !$estadoProducto) {
+            $payload = json_encode(["mensaje" => "Faltan parámetros para modificar el producto"]);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
+
+        try {
+            $pedido = Pedido::obtenerPedido($idPedido);
+            if (!$pedido) {
+                throw new Exception("Pedido no encontrado");
+            }
+
+            foreach ($pedido['listaProductos'] as &$producto) {
+                if ($producto['nombre'] === $nombreProducto) {
+                    $producto['estado'] = $estadoProducto; 
+                    break;
+                }
+            }
+
+            if (!isset($producto)) {
+                throw new Exception("Producto no encontrado en el pedido");
+            }
+
+            $productosJson = json_encode($pedido['listaProductos']);
+            $objAccesoDatos = AccesoDatos::obtenerInstancia();
+            $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET listaProductos = :listaProductos WHERE id = :id");
+            $consulta->bindValue(':listaProductos', $productosJson, PDO::PARAM_STR);
+            $consulta->bindValue(':id', $idPedido, PDO::PARAM_INT);
+            $consulta->execute();
+
+            $payload = json_encode(["mensaje" => "Producto actualizado con éxito", "producto" => $producto]);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+            
+        } catch (Exception $e) {
+            $payload = json_encode(["error" => $e->getMessage()]);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
+    }
+    public function entregarPedido($request, $response, $args)
+    {
+        $idPedido = $args['id'] ?? null;
+        
+        if (!$idPedido) {
+            $payload = json_encode(["mensaje" => "ID del pedido no proporcionado"]);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
+    
+        try {
+            $pedido = Pedido::obtenerPedido($idPedido);
+            
+            if (!$pedido) {
+                $payload = json_encode(["mensaje" => "Pedido no encontrado"]);
+                $response->getBody()->write($payload);
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(404);
+            }
+    
+            foreach ($pedido['listaProductos'] as $producto) {
+                if ($producto['estado'] !== 'listo') {
+                    $payload = json_encode(["mensaje" => "No todos los productos están listos para ser entregados"]);
+                    $response->getBody()->write($payload);
+                    return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+                }
+            }
+    
+            $codigoMesa = $pedido['codigoMesa'];
+            Mesa::cambiarEstadoAClienteConsumiendo($codigoMesa);
+    
+            foreach ($pedido['listaProductos'] as $producto) {
+                $empleadoAsignado = $producto['empleadoAsignado'];  
+                Usuario::cambiarAEstadoLibre($empleadoAsignado);
+
+            }
+    
+            Pedido::marcarComoEntregado($idPedido);
+    
+            $payload = json_encode(["mensaje" => "Pedido entregado con éxito y empleados asignados actualizados"]);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    
+        } catch (Exception $e) {
+            $payload = json_encode(["error" => $e->getMessage()]);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
+    }
+    
+    public function pagandoPedido($request, $response, $args){
+        $idPedido = $args['id'] ?? null;
+        
+        if (!$idPedido) {
+            $payload = json_encode(["mensaje" => "ID del pedido no proporcionado"]);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
+    
+        try {
+            $pedido = Pedido::obtenerPedido($idPedido);
+            
+            if (!$pedido) {
+                $payload = json_encode(["mensaje" => "Pedido no encontrado"]);
+                $response->getBody()->write($payload);
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(404);
+            }
+            if ($pedido['estado'] !== 'entregado') {
+                $payload = json_encode(["mensaje" => "El pedido no ha sido entregado"]);
+                $response->getBody()->write($payload);
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+            }
+            $codigoMesa = $pedido['codigoMesa'];
+            Mesa::cambiarEstadoAClientePagando($codigoMesa);
+            Pedido::marcarComoPagado($idPedido);
+    
+            $payload = json_encode(["mensaje" => "Pedido entregado con éxito y empleados asignados actualizados"]);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    
+        } catch (Exception $e) {
+            $payload = json_encode(["error" => $e->getMessage()]);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
+    }
+
     public function BorrarUno($request, $response, $args)
     {
         $id = $args['id'] ?? null;
@@ -108,4 +236,5 @@ class PedidoController extends Pedido implements IApiUsable
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
     }
+
 }

@@ -32,24 +32,11 @@ CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
   `usuario` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `clave` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `fechaBaja` date DEFAULT NULL
+  `rol` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `estado` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Volcado de datos para la tabla `usuarios`
---
-
-INSERT INTO `usuarios` (`id`, `usuario`, `clave`, `fechaBaja`) VALUES
-(1, 'franco', 'Hsu23sDsjseWs', NULL),
-(2, 'pedro', 'dasdqsdw2sd23', NULL),
-(3, 'jorge', 'sda2s2f332f2', NULL);
-
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`);

@@ -20,6 +20,36 @@ class MesaController extends Mesa implements IApiUsable
 
         return $response->withHeader('Content-Type', 'application/json');
     }
+    public function TraerUnoCodigo($request, $response, $args)
+{
+    $codigo = $args['codigo'] ?? null;  // Cambia 'codigo_mesa' por 'codigo' aquí
+    if ($codigo) {
+        $mesa = Mesa::obtenerMesaPorCodigo($codigo);
+        if ($mesa) {
+            $payload = json_encode($mesa);
+        } else {
+            $payload = json_encode(array("mensaje" => "Mesa no encontrada"));
+        }
+    } else {
+        $payload = json_encode(array("mensaje" => "Código no proporcionado"));
+    }
+
+    $response->getBody()->write($payload);
+    return $response->withHeader('Content-Type', 'application/json');
+}
+    public function cerrarMesa($request, $response, $args)
+    {
+        $codigo = $args['codigo'] ?? null;
+        if ($codigo) {
+            Mesa::cambiarEstadoAMesaCerrada($codigo);
+            $payload = json_encode(array("mensaje" => "Mesa cerrada con éxito"));
+        } else {
+            $payload = json_encode(array("mensaje" => "Código no proporcionado"));
+        }
+
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
 
     public function TraerUno($request, $response, $args)
     {
@@ -53,8 +83,7 @@ class MesaController extends Mesa implements IApiUsable
             $mesa = new Mesa();
             $mesa->id = $id;
             $mesa->estado = $parametros['estado'];
-            //*$mesa->codigoMesa = $parametros['codigoMesa'];*//
-            $mesa->id_pedido = $parametros['id_pedido'];
+            $mesa->codigoMesa = $parametros['codigoMesa'];
 
             $respuesta = Mesa::modificarmesa($mesa);
             $payload = json_encode(array("mensaje" => $respuesta));

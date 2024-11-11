@@ -24,8 +24,8 @@ class Pedido{
         }
     
         $this->estado = 'pendiente';
-        $this->tiempoEstimado = 0;
-        $this->precio = 0;
+        $this->tiempoEstimado = Pedido::CalcularTiempoEstimado($listaProductos);
+        $this->precio = Pedido::CalcularPrecio($listaProductos);
     
         $productosJson = json_encode($listaProductos);
     
@@ -123,13 +123,104 @@ class Pedido{
         $consulta->execute();
     }
 
-    public static function asignarSeccionROl($listaProductos)
-    {
+    public static function asignarTrabajadorAProducto($nombreProducto, $cantidad) {
+        $producto = Producto::obtenerProducto($nombreProducto);
+    
+        if ($producto) {
+            $seccionProducto = $producto['seccion'];
+            $empleadoAsignado = null;
+    
+            switch ($seccionProducto) {
+                case 'cocina':
+                    $empleadoAsignado = Usuario::obtener1UsuarioLibresPorRol('cocinero');
+                    break;
+                case 'chopera':
+                    $empleadoAsignado = Usuario::obtener1UsuarioLibresPorRol('cervezero');
+                    break;
+                case 'tragos':
+                    $empleadoAsignado = Usuario::obtener1UsuarioLibresPorRol('bartender');
+                    break;
+                default:
+                    throw new Exception("Sección de producto no válida.");
+            }
+    
+            if ($empleadoAsignado) {
+                $producto['empleadoAsignado'] = $empleadoAsignado['usuario']; 
+                Usuario::cambiarAEstadoOcupado($empleadoAsignado['id']);
+                return [
+                    'nombre' => $producto['nombre'],  
+                    'cantidad' => $cantidad,         
+                    'empleadoAsignado' => $empleadoAsignado['usuario'],
+                    'estado' => 'preparandose'
+                ];        
+            } else {
+                throw new Exception("No hay empleados disponibles para la sección: $seccionProducto.");
+            }
+        } else {
+            throw new Exception("Producto no encontrado: $nombreProducto.");
+        }
+    }
+    public static function asignarTrabajador($listaProductos) {
         foreach ($listaProductos as &$producto) {
-            $producto['seccion'] = $seccion
+            $producto = self::asignarTrabajadorAProducto($producto['nombre'], $producto['cantidad']);
         }
         return $listaProductos;
-
     }
 
+    public static function CalcularTiempoEstimado($listaProductos)
+    {
+        $tiempoMaximo = 0;
+
+        foreach ($listaProductos as $producto) {
+            $productoObtenido = Producto::obtenerProducto($producto['nombre']);
+            
+            if ($productoObtenido) {
+                $tiempoPreparacion = $productoObtenido['tiempo'];
+                
+                $tiempoPreparacionAjustado = $tiempoPreparacion * 1.4;
+
+                if ($tiempoPreparacionAjustado > $tiempoMaximo) {
+                    $tiempoMaximo = $tiempoPreparacionAjustado;
+                }
+            } else {
+                throw new Exception("Producto no encontrado: " . $producto['nombre']);
+            }
+        }
+
+        return $tiempoMaximo; 
+    }
+
+    public static function CalcularPrecio($listaProductos)
+    {
+        $precioAcumulado = 0;
+
+        foreach ($listaProductos as $producto) {
+            $productoObtenido = Producto::obtenerProducto($producto['nombre']);
+            
+            if ($productoObtenido) {
+                $precioProducto = $productoObtenido['precioUnidad'];
+                $precioAcumulado += $precioProducto * $producto['cantidad'];
+            } else {
+                throw new Exception("Producto no encontrado: " . $producto['nombre']);
+            }
+        }
+        return $precioAcumulado; 
+    }
+
+
+    public static function marcarComoEntregado($id)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET estado = 'entregado' WHERE id = :id");
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta->execute();
+    }
+    public static function marcarComoPagado($id)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET estado = 'pagado' WHERE id = :id");
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta->execute();
+    }
 }
+?>
