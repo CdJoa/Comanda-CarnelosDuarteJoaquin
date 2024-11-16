@@ -27,13 +27,6 @@ class Mesa
         return $objAccesoDatos->obtenerUltimoId();
     }
 
-    public static function cambiarEstadoAClienteConsumiendo($codigoMesa)
-    {
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("UPDATE mesas SET estado = 'cliente comiendo' WHERE codigoMesa = :codigoMesa");
-        $consulta->bindValue(':codigoMesa', $codigoMesa, PDO::PARAM_STR);
-        $consulta->execute();
-    }
 
     public static function crearCodigo()
     {
@@ -63,24 +56,25 @@ class Mesa
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Mesa');
     }
 
-    public static function obtenerMesa($estado)
+        public static function obtenerMesa($estado)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM mesas WHERE id = :id");
         $consulta->bindValue(':id', $estado, PDO::PARAM_STR);
         $consulta->execute();
 
-        return $consulta->fetch(PDO::FETCH_CLASS, 'Mesa');
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Mesa');
     }
 
-        public static function obtenerMesaPorCodigo($codigoMesa)
+
+    public static function obtenerMesaPorID($id)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM mesas WHERE codigoMesa = :codigoMesa");
-        $consulta->bindValue(':codigoMesa', $codigoMesa, PDO::PARAM_STR);
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM mesas WHERE id = :id");
+        $consulta->bindValue(':id', $id, PDO::PARAM_STR);
         $consulta->execute();
 
-        return $consulta->fetch(PDO::FETCH_CLASS, 'Mesa');
+        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Mesa');
     }
 
 
@@ -92,28 +86,6 @@ class Mesa
         return $consulta->fetchColumn();
     }
 
-    public static function cambiarEstadoAMesaCerrada($codigoMesa)
-    {
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("UPDATE mesas SET estado = 'cerrada' WHERE codigoMesa = :codigoMesa");
-        $consulta->bindValue(':codigoMesa', $codigoMesa, PDO::PARAM_STR);
-        $consulta->execute();
-    }
-    public static function IngresarCodigoPedidoCambiarEstado($codigoMesa, $codigoPedidoIngresado)
-    {
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("UPDATE mesas SET codigo_pedido = :codigo_pedido, estado = 'cliente esperando' WHERE codigoMesa = :codigoMesa");
-        $consulta->bindValue(':codigo_pedido', $codigoPedidoIngresado, PDO::PARAM_INT);
-        $consulta->bindValue(':codigoMesa', $codigoMesa, PDO::PARAM_STR);
-        $consulta->execute();
-    }
-    public static function cambiarEstadoAClientePagando($codigoMesa)
-    {
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("UPDATE mesas SET estado = 'cliente pagando' WHERE codigoMesa = :codigoMesa");
-        $consulta->bindValue(':codigoMesa', $codigoMesa, PDO::PARAM_STR);
-        $consulta->execute();
-    }
 
     public static function ObtenerCodigoMesaPorIDPedido($idPedidoIngresado){
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -145,6 +117,30 @@ class Mesa
         $consulta->execute();
     }
 
+
+    public static function IngresarCodigoPedidoCambiarEstado($codigoMesa, $codigoPedidoIngresado)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE mesas SET codigo_pedido = :codigo_pedido, estado = 'cliente esperando' WHERE codigoMesa = :codigoMesa");
+        $consulta->bindValue(':codigo_pedido', $codigoPedidoIngresado, PDO::PARAM_INT);
+        $consulta->bindValue(':codigoMesa', $codigoMesa, PDO::PARAM_STR);
+        $consulta->execute();
+    }
+
+    public static function cambiarEstadoMesa($codigoMesa, $nuevoEstado)
+    {
+        $estadosPermitidos = ['cliente pagando', 'cliente comiendo', 'cerrada', 'cliente esperando', 'abierta'];
+
+        if (!in_array($nuevoEstado, $estadosPermitidos)) {
+            throw new InvalidArgumentException("Estado inválido: $nuevoEstado");
+        }
+
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE mesas SET estado = :nuevoEstado WHERE codigoMesa = :codigoMesa");
+        $consulta->bindValue(':nuevoEstado', $nuevoEstado, PDO::PARAM_STR);
+        $consulta->bindValue(':codigoMesa', $codigoMesa, PDO::PARAM_STR);
+        $consulta->execute();
+    }
 
 }
 ?>

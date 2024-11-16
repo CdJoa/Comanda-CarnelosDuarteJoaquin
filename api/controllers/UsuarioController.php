@@ -33,7 +33,6 @@ class UsuarioController extends Usuario implements IApiUsable
         }
     }
 
-
     public function TraerUno($request, $response, $args)
     {
         $usr = $args['usuario'];
@@ -75,18 +74,44 @@ class UsuarioController extends Usuario implements IApiUsable
     }
 
     public function BorrarUno($request, $response, $args)
-{
-    $id = $args['id'] ?? null; 
-    if ($id !== null) {
-        $resultado = Usuario::borrarUsuario($id);
-        if ($resultado) {
-            $payload = json_encode(array("mensaje" => "Usuario borrado con éxito"));
-        } else {
-            $payload = json_encode(array("mensaje" => "Error al borrar el usuario"));
+    {
+        $id = $args['id'] ?? null; 
+        if ($id !== null) {
+            $resultado = Usuario::borrarUsuario($id);
+            if ($resultado) {
+                $payload = json_encode(array("mensaje" => "Usuario borrado con éxito"));
+            } else {
+                $payload = json_encode(array("mensaje" => "Error al borrar el usuario"));
+            }
+        }
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+    
+    public static function pasarALibre($request, $response, $args)
+    {
+        $usuario = $args['usuario'] ?? null;  
+
+        try {
+            $usuarioData = Usuario::obtenerUsuario($usuario);
+
+            if (!$usuarioData) {
+                $payload = json_encode(["mensaje" => "Usuario no encontrado"]);
+                $response->getBody()->write($payload);
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(404);
+            }
+
+            Usuario::cambiarAEstadoLibre($usuarioData->usuario); 
+
+            $payload = json_encode(["mensaje" => "Estado del usuario actualizado a 'libre'"]);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+
+        } catch (Exception $e) {
+            $payload = json_encode(["error" => $e->getMessage()]);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
         }
     }
-    $response->getBody()->write($payload);
-    return $response->withHeader('Content-Type', 'application/json');
-}
 }
 ?>

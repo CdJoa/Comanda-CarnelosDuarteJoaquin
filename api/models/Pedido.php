@@ -154,12 +154,18 @@ class Pedido{
                     'estado' => 'preparandose'
                 ];        
             } else {
-                throw new Exception("No hay empleados disponibles para la sección: $seccionProducto.");
+                return [
+                    'nombre' => $producto['nombre'],  
+                    'cantidad' => $cantidad,         
+                    'empleadoAsignado' => null,
+                    'estado' => 'pendiente'
+                ];
             }
         } else {
             throw new Exception("Producto no encontrado: $nombreProducto.");
         }
     }
+    
     public static function asignarTrabajador($listaProductos) {
         foreach ($listaProductos as &$producto) {
             $producto = self::asignarTrabajadorAProducto($producto['nombre'], $producto['cantidad']);
@@ -206,7 +212,6 @@ class Pedido{
         }
         return $precioAcumulado; 
     }
-
 
     public static function marcarComoEntregado($id)
     {

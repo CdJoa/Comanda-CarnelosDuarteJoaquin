@@ -65,8 +65,6 @@ class Usuario
         return $consulta->fetch(PDO::FETCH_ASSOC);
     }
 
-
-
     public static function obtenerUsuario($usuario)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -97,17 +95,13 @@ class Usuario
     public static function modificarUsuario($usuario)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-
         $consulta = $objAccesoDatos->prepararConsulta("UPDATE usuarios SET usuario = :usuario, clave = :clave, rol = :rol, estado = :estado WHERE id = :id");
         $consulta->bindValue(':usuario', $usuario->usuario, PDO::PARAM_STR);
         $claveHash = password_hash($usuario->clave, PASSWORD_DEFAULT);
         $consulta->bindValue(':clave', $claveHash);
-
         $consulta->bindValue(':id', $usuario->id, PDO::PARAM_INT);
         $consulta->bindValue(':rol', $usuario->rol, PDO::PARAM_STR);
         $consulta->bindValue(':estado',  $usuario->estado, PDO::PARAM_STR);
-
-
         $consulta->execute();
     }
 
@@ -121,5 +115,37 @@ class Usuario
         
     }
 
+    public static function verificarClave($usuario, $clave)
+    {
+        if (!$usuario || !$clave) {
+            return false; 
+        }
+
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT clave FROM usuarios WHERE usuario = :usuario");
+        $consulta->bindValue(':usuario', $usuario, PDO::PARAM_STR);
+        $consulta->execute();
+        $hash = $consulta->fetchColumn();
+
+        if ($hash && password_verify($clave, $hash)) {
+            return true; 
+        }
+
+        return false; 
+    }
+
+    public static function verificarRol($usuario, $rol)
+    {
+        if (!$usuario || !$rol) {
+            return false; 
+        }
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT COUNT(*) FROM usuarios WHERE usuario = :usuario AND rol = :rol");
+        $consulta->bindValue(':usuario', $usuario, PDO::PARAM_STR);
+        $consulta->bindValue(':rol', $rol, PDO::PARAM_STR);
+        $consulta->execute();
+
+        return $consulta->fetchColumn() > 0;
+    }
 }
 ?>

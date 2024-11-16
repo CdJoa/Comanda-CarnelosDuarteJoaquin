@@ -8,21 +8,9 @@
 	"item": [
 		{
 			"name": "Usuarios",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "text"
-						}
-					}
-				},
 				"url": "http://localhost:666/usuarios"
 			},
 			"response": []
@@ -37,11 +25,50 @@
 			"response": []
 		},
 		{
+			"name": "mesas",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"sector\": \"socio\",\r\n    \"usuario\": \"socio1\",\r\n    \"clave\": \"admin\"\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:666/mesas"
+			},
+			"response": []
+		},
+		{
+			"name": "pedidos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:666/pedidos"
+			},
+			"response": []
+		},
+		{
+			"name": "Traer 1 pedidos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:666/pedidos"
+			},
+			"response": []
+		},
+		{
 			"name": "Traer1Producto",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "http://localhost:666/productos/cocacola"
+				"url": "http://localhost:666/productos/empanada"
 			},
 			"response": []
 		},
@@ -55,13 +82,22 @@
 			"response": []
 		},
 		{
+			"name": "TraerUnaMEsa",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:666/mesas/TraerUnoCodigo/6lr09"
+			},
+			"response": []
+		},
+		{
 			"name": "altaUsuarios",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{       \r\n    \"usuario\": \"paparaz2i\",\r\n    \"clave\": \"gol\",\r\n    \"rol\": \"mozo\"\r\n}\r\n",
+					"raw": "{\r\n    \"usuario\": \"u\",\r\n    \"clave\": \"cuchillo\",\r\n    \"rol\": \"cervezero\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -73,13 +109,66 @@
 			"response": []
 		},
 		{
+			"name": "altaPedidos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `\r",
+							"<style type=\"text/css\">\r",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+							"    .tftable tr {background-color:#ffffff;}\r",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+							"    .tftable tr:hover {background-color:#e0ffff;}\r",
+							"</style>\r",
+							"\r",
+							"<table class=\"tftable\" border=\"1\">\r",
+							"    <tr>\r",
+							"        <th>Error Message</th>\r",
+							"    </tr>\r",
+							"    <tr>\r",
+							"        <td>{{response.error}}</td>\r",
+							"    </tr>\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"function constructVisualizerPayload() {\r",
+							"    return {response: pm.response.json()}\r",
+							"}\r",
+							"\r",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{       \r\n    \"nombreCliente\": \"heevla\",\r\n    \"listaProductos\": [\r\n        {\"nombre\": \"cerveza\", \"cantidad\": 2},\r\n        {\"nombre\": \"empanada\", \"cantidad\": 3}\r\n\r\n    ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:666/pedidos"
+			},
+			"response": []
+		},
+		{
 			"name": "altaProducto",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{       \r\n    \"nombre\": \"heineken 2lts\",\r\n    \"cantidad\": 1000,\r\n    \"precioUnidad\": 20,\r\n    \"tipo\": \"bebida\",\r\n    \"seccion\" : \"barra\",\r\n    \"tiempo\": 2\r\n}\r\n",
+					"raw": "{       \r\n    \"nombre\": \"t\",\r\n    \"cantidad\": 1000,\r\n    \"precioUnidad\": 20,\r\n    \"tipo\": \"bebida\",\r\n    \"seccion\" : \"e\",\r\n    \"tiempo\": 2\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -91,13 +180,26 @@
 			"response": []
 		},
 		{
+			"name": "altaMesa",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": "http://localhost:666/mesas"
+			},
+			"response": []
+		},
+		{
 			"name": "modificarUsuario",
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{       \r\n    \"usuario\": \"ozil\",\r\n    \"clave\": \"ladygaga\",\r\n    \"rol\": \"mozo\"\r\n}\r\n\r\n ",
+					"raw": "{       \r\n    \"usuario\": \"messi\",\r\n    \"clave\": \"ladygaga\",\r\n    \"rol\": \"mozo\"\r\n}\r\n\r\n ",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -105,7 +207,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:666/usuarios/?id=12",
+					"raw": "http://localhost:666/usuarios/?id=14",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -118,7 +220,42 @@
 					"query": [
 						{
 							"key": "id",
-							"value": "12"
+							"value": "14"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "usuarioEstadoLibre",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{       \r\n    \"usuario\": \"messi\",\r\n    \"clave\": \"ladygaga\",\r\n    \"rol\": \"mozo\"\r\n}\r\n\r\n ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:666/usuarios/?id=14",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "666",
+					"path": [
+						"usuarios",
+						""
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "14"
 						}
 					]
 				}
@@ -161,38 +298,146 @@
 			"response": []
 		},
 		{
-			"name": "BorrarUsuario",
+			"name": "ModificarMesas",
 			"request": {
-				"method": "DELETE",
+				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{       \r\n    \"usuarioId\": \"11\",\r\n\r\n}\r\n\r\n \r\n ",
+					"raw": "{       \r\n    \"estado\": \"abierta\",\r\n    \"id_pedido\" : 33\r\n}\r\n",
 					"options": {
 						"raw": {
-							"language": "text"
+							"language": "json"
 						}
 					}
 				},
 				"url": {
-					"raw": "http://localhost:666/usuarios/",
+					"raw": "http://localhost:666/mesas/?id=5",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "666",
 					"path": [
-						"usuarios",
+						"mesas",
 						""
 					],
 					"query": [
 						{
-							"key": "usuarioId",
-							"value": "11",
-							"disabled": true
+							"key": "id",
+							"value": "5"
 						}
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "modificarEstadoPedido",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{       \r\n    \"nombreProducto\": \"empanada\",\r\n    \"estadoProducto\": \"listo\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:666/pedidos/modificarEstado/40"
+			},
+			"response": []
+		},
+		{
+			"name": "asignarProductoPendiente",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{       \r\n    \"nombreProducto\": \"empanada\",\r\n    \"estadoProducto\": \"listo\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:666/pedidos/modificarEstado/40"
+			},
+			"response": []
+		},
+		{
+			"name": "CerrarMesa",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{       \r\n    \"nombreProducto\": \"empanada\",\r\n    \"estadoProducto\": \"listo\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:666/pedidos/modificarEstado/40"
+			},
+			"response": []
+		},
+		{
+			"name": "entregarPedido",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{       \r\n    \"nombreProducto\": \"empanada\",\r\n    \"estadoProducto\": \"listo\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:666/pedidos/modificarEstado/40"
+			},
+			"response": []
+		},
+		{
+			"name": "pagandoPedido",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{       \r\n    \"nombreProducto\": \"empanada\",\r\n    \"estadoProducto\": \"listo\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:666/pedidos/modificarEstado/40"
+			},
+			"response": []
+		},
+		{
+			"name": "BorrarUsuario",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "12",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://localhost:666/usuarios/16"
 			},
 			"response": []
 		},
@@ -202,6 +447,15 @@
 				"method": "DELETE",
 				"header": [],
 				"url": "http://localhost:666/productos/4"
+			},
+			"response": []
+		},
+		{
+			"name": "BorrarMesas",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "http://localhost:666/mesas/7"
 			},
 			"response": []
 		}
