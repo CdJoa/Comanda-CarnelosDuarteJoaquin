@@ -19,7 +19,7 @@ require_once __DIR__ . '/controllers/UsuarioController.php';
 require_once __DIR__ . '/controllers/ProductoController.php';
 require_once __DIR__ . '/controllers/MesaController.php';
 require_once __DIR__ . '/controllers/PedidoController.php';
-
+require_once __DIR__ . '/utils/AutentificadorJWT.php';
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
@@ -85,11 +85,39 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
   
     });
 
+
+    $app->group('/auth', function (RouteCollectorProxy $group) {
+
+      $group->post('/login', function (Request $request, Response $response) {    
+        $parametros = $request->getParsedBody();
+      
+        $usuario = $parametros['usuario'];
+        $rol = $parametros['rol'];
+
+        if ($rol !== 'socio') {
+          $payload = json_encode(array('error' => 'Error no sos socio'));
+        } else if (Usuario::verificarRol($usuario, $rol)) {
+          $datos = array('usuario' => $usuario);
+        
+          $token = AutentificadorJWT::CrearToken($datos);
+          $payload = json_encode(array('jwt' => $token));
+        } else {
+          $payload = json_encode(array('error' => 'Usuario o contraseña incorrectos'));
+        }
+        
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
+      });
+
+    });
+
 $app->get('[/]', function (Request $request, Response $response) {    
     $payload = json_encode(array("mensaje" => "Slim Framework 4 PHP"));
     
     $response->getBody()->write($payload);
     return $response->withHeader('Content-Type', 'application/json');
 });
+
+
 
 $app->run();

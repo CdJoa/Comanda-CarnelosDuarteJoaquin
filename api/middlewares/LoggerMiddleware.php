@@ -14,16 +14,27 @@ class LoggerMiddleware
 
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
-        $parsedBody = $request->getParsedBody();
+        $header = $request->getHeaderLine('Authorization');
+        $token = trim(explode("Bearer", $header)[1] ?? '');
 
+        try {
+            AutentificadorJWT::VerificarToken($token);
+        } catch (Exception $e) {
+            $response = new Response();
+            $payload = json_encode(['mensaje' => 'ERROR: Hubo un error con el TOKEN']);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
+        }
+
+        $parsedBody = $request->getParsedBody();
         $sector = $parsedBody['sector'] ?? null;
-        $usuario = $parsedBody['usuario'] ?? null;
-        $clave = $parsedBody['clave'] ?? null;
+        $usuarioM = $parsedBody['usuarioM'] ?? null;
+        $claveM = $parsedBody['claveM'] ?? null;
 
         if (
             $sector === $this->rolEsperado &&
-            Usuario::verificarRol($usuario, $this->rolEsperado) &&
-            Usuario::verificarClave($usuario, $clave)
+            Usuario::verificarRol($usuarioM, $this->rolEsperado) &&
+            Usuario::verificarClave($usuarioM, $claveM)
         ) {
             return $handler->handle($request);
         }
@@ -31,6 +42,23 @@ class LoggerMiddleware
         $response = new Response();
         $payload = json_encode(['mensaje' => 'Clave incorrecta o rol no permitido.']);
         $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(403); // Forbidden
+    }
+
+
+    public static function verificarToken(Request $request, RequestHandler $handler): Response
+    {
+        $header = $request->getHeaderLine('Authorization');
+        $token = trim(explode("Bearer", $header)[1]);
+
+        try {
+            AutentificadorJWT::VerificarToken($token);
+            $response = $handler->handle($request);
+        } catch (Exception $e) {
+            $response = new Response();
+            $payload = json_encode(array('mensaje' => 'ERROR: Hubo un error con el TOKEN'));
+            $response->getBody()->write($payload);
+        }
         return $response->withHeader('Content-Type', 'application/json');
     }
 }
