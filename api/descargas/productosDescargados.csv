@@ -1,0 +1,5 @@
+id,nombre,cantidad,precioUnidad,tipo,seccion,tiempo
+14,milanesa,1000,50.00,comida,cocina,2
+38,Pizza,10,8.99,comida,comida,15
+41,"Coca Cola",50,1.99,bebida,bebida,2
+45,Agua,40,0.99,bebida,bebida,2

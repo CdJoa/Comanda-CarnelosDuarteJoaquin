@@ -30,6 +30,19 @@ class Usuario
         return $objAccesoDatos->obtenerUltimoId();
     }
 
+    public static function cuerpoCSV($usuario, $clave, $rol, $estado)
+    {
+        $usuario = new self();
+        $usuario->usuario = $usuario;
+        $usuario->clave = $clave;
+        $usuario->rol = $rol;
+        $usuario->estado = $estado;
+
+        return $usuario->crearUsuario();
+    }
+
+
+
     public static function existeNombreUsuario($usuario)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();

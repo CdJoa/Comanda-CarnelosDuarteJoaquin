@@ -28,6 +28,20 @@ class Producto
         return $objAccesoDatos->obtenerUltimoId();
     }
 
+
+    public static function cuerpoCSV($nombre, $cantidad, $precioUnidad, $tiempo, $tipo, $seccion)
+    {
+        $producto = new self();
+        $producto->nombre = $nombre;
+        $producto->cantidad = $cantidad;
+        $producto->precioUnidad = $precioUnidad;
+        $producto->tiempo = $tiempo;
+        $producto->tipo = $tipo;
+        $producto->seccion = $seccion;
+
+        return $producto->crearProducto();
+    }
+
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();

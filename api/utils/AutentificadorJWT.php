@@ -78,4 +78,31 @@ class AutentificadorJWT
 
         return sha1($aud);
     }
+
+    public static function ObtenerTiempoRestante($token)
+    {
+        if (empty($token)) {
+            throw new Exception("El token esta vacio.");
+        }
+
+        $payload = JWT::decode(
+            $token,
+            self::$claveSecreta,
+            self::$tipoEncriptacion
+        );
+
+        $expiracion = $payload->exp;
+
+        $tiempoRestante = $expiracion - time();
+
+        if ($tiempoRestante < 0) {
+            throw new Exception("El token ya vencio");
+        }
+
+        return $tiempoRestante;  
+    }
+
+
+
+
 }

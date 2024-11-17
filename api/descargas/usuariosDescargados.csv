@@ -1,0 +1,6 @@
+id,usuario,clave,rol,estado
+55,socio1,$2y$10$qXHMvMdJ5kjUAgSLnMBANeNzxLhYh99HBaHAcOLp0Vdgo94APfVzW,socio,libre
+56,socio2,$2y$10$NB4szyRTQOFSAxmqPiHm/.VQg359LZgEldm7JuKTBfERpl6HESUzW,socio,libre
+57,socio3,$2y$10$7qkicmjDgFPXBjT19ZSfduJq23Jk0ovABBNuxq2P6BNUCCrUeCxQa,socio,libre
+109,joaquin,$2y$10$JTt2Uycb7pgRzxiIUwZps.cJckrT3hH0GzF5zwNyM9omz4llCZDAe,mozo,libre
+110,alejo,$2y$10$kcHsVMftF7wHZuXLDmA4OeHA0.IDsLcqKo9efbEnAv0nqTOSNOUR2,mozo,libre

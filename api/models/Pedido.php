@@ -48,8 +48,20 @@ class Pedido{
     
         return $this->id;
     }
+    public static function cuerpoCSV($nombreCliente, $codigoMesa, $estado, $tiempoEstimado, $precio, $codigoPedido,$listaProductos)
+    {
+        $pedido = new self();
+        $pedido->nombreCliente = $nombreCliente;
+        $pedido->codigoMesa = $codigoMesa;
+        $pedido->estado = $estado;
+        $pedido->tiempoEstimado = $tiempoEstimado;
+        $pedido->precio = $precio;
+        $pedido->codigoPedido = $codigoPedido;
+        $pedido->listaProductos = $listaProductos;
     
-
+        return $pedido->crearPedido($listaProductos);
+    }
+    
         public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
