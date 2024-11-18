@@ -1,1 +1,2 @@
-id,codigo,mesa,estado,tiempoEstimado,tiempoInicio,tiempoEntrega,tiempoFinalizacion,precioTotal
+id,codigoPedido,estado,nombreCliente,codigoMesa,tiempoEstimado,precio,listaProductos
+54,t0cx9,pendiente,joaquito,7fgpm,28,180,"[{""nombre"":""milanesa a caballo"",""cantidad"":1,""empleadoAsignado"":null,""estado"":""pendiente""},{""nombre"":""hamburguesa de garbanzo"",""cantidad"":2,""empleadoAsignado"":null,""estado"":""pendiente""},{""nombre"":""corona"",""cantidad"":1,""empleadoAsignado"":null,""estado"":""pendiente""},{""nombre"":""daikiri"",""cantidad"":1,""empleadoAsignado"":null,""estado"":""pendiente""}]"

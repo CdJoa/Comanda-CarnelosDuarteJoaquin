@@ -1,5 +1,4 @@
 <?php
-require_once('tcpdf/tcpdf.php');
 
 class Pedido{
     public $id;
@@ -95,6 +94,17 @@ class Pedido{
 
         return $pedido;
     }
+
+       public static function obtenerPedidoCodigo($codigoPedido)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedidos WHERE codigoPedido = :codigoPedido");
+        $consulta->bindValue(':codigoPedido', $codigoPedido, PDO::PARAM_STR);
+        $consulta->execute();
+        return $consulta->fetchObject('Pedido');
+    }
+
+
 
     public static function crearCodigo()
     {
@@ -241,38 +251,15 @@ class Pedido{
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         $consulta->execute();
     }
-    public static function generarPdf($id)
-    {
+
+    public static function sacarFoto($id){
         $pedido = Pedido::obtenerPedido($id);
         if ($pedido) {
-            $pdf = new TCPDF();
-            $pdf->AddPage();
-            $pdf->SetFont('helvetica', '', 12);
-            $html = '<h1>Pedido #' . $pedido['codigoPedido'] . '</h1>';
-            
-            $html .= '<p><strong>Cliente:</strong> ' . $pedido['nombreCliente'] . '</p>';
-
-            $html .= '<p><strong>Mesa:</strong> ' . $pedido['codigoMesa'] . '</p>';
-
-            $html .= '<p><strong>Tiempo Estimado:</strong> ' . $pedido['tiempoEstimado'] . ' minutos</p>';
-
-            $html .= '<p><strong>Precio:</strong> $' . $pedido['precio'] . '</p>';
-
-            $html .= '<h2>Productos</h2>';
-            
-            $html .= '<ul>';
-
-            foreach ($pedido['listaProductos'] as $producto) {
-                $html .= '<li>' . $producto['nombre'] . ' - Cantidad: ' . $producto['cantidad'] . '</li>';
-            }
-
-            $html .= '</ul>';
-
-            $pdf->writeHTML($html, true, false, true, false, '');
-
-            $filePath = 'pedidosPDF/pedido_' . $pedido['codigoPedido'] . '.pdf';
-            $pdf->Output($filePath, 'F');
-            return $filePath;
+            $foto = $_FILES['foto'];
+            $extension = pathinfo($foto['name'], PATHINFO_EXTENSION);
+            $nombreFoto = 'Fotos-PDF/pedido_' . $pedido['codigoPedido'] . '.' . $extension;
+            move_uploaded_file($foto['tmp_name'], $nombreFoto);
+            return $nombreFoto;
         } else {
             throw new Exception("Pedido no encontrado.");
         }

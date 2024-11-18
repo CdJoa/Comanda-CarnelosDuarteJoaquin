@@ -14,20 +14,38 @@ class Producto
     public function crearProducto()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO productos (nombre, cantidad, precioUnidad, tiempo, tipo, seccion) 
-                                                        VALUES (:nombre, :cantidad, :precioUnidad, :tiempo, :tipo, :seccion)");
-        $consulta->bindValue(':nombre', $this->nombre, PDO::PARAM_STR);
-        $consulta->bindValue(':cantidad', $this->cantidad, PDO::PARAM_INT);
-        $consulta->bindValue(':precioUnidad', $this->precioUnidad, PDO::PARAM_INT);
-        $consulta->bindValue(':tipo', $this->tipo, PDO::PARAM_STR); 
-        $consulta->bindValue(':seccion', $this->tipo, PDO::PARAM_STR); 
-
-        $consulta->bindValue(':tiempo', $this->tiempo, PDO::PARAM_INT);
-        $consulta->execute();
-
-        return $objAccesoDatos->obtenerUltimoId();
+    
+        $productoExistente = self::obtenerProducto($this->nombre);
+    
+        if ($productoExistente) {
+            $nuevaCantidad = $productoExistente['cantidad'] + $this->cantidad;
+            $nuevoPrecio = $this->precioUnidad; 
+            $consulta = $objAccesoDatos->prepararConsulta(
+                "UPDATE productos SET cantidad = :cantidad, precioUnidad = :precioUnidad WHERE id = :id"
+            );
+            $consulta->bindValue(':cantidad', $nuevaCantidad, PDO::PARAM_INT);
+            $consulta->bindValue(':precioUnidad', $nuevoPrecio, PDO::PARAM_INT);
+            $consulta->bindValue(':id', $productoExistente['id'], PDO::PARAM_INT);
+            $consulta->execute();
+    
+            return $productoExistente['id']; 
+        } else {
+            $consulta = $objAccesoDatos->prepararConsulta(
+                "INSERT INTO productos (nombre, cantidad, precioUnidad, tiempo, tipo, seccion) 
+                 VALUES (:nombre, :cantidad, :precioUnidad, :tiempo, :tipo, :seccion)"
+            );
+            $consulta->bindValue(':nombre', $this->nombre, PDO::PARAM_STR);
+            $consulta->bindValue(':cantidad', $this->cantidad, PDO::PARAM_INT);
+            $consulta->bindValue(':precioUnidad', $this->precioUnidad, PDO::PARAM_INT);
+            $consulta->bindValue(':tiempo', $this->tiempo, PDO::PARAM_INT);
+            $consulta->bindValue(':tipo', $this->tipo, PDO::PARAM_STR);
+            $consulta->bindValue(':seccion', $this->seccion, PDO::PARAM_STR);
+            $consulta->execute();
+    
+            return $objAccesoDatos->obtenerUltimoId();
+        }
     }
-
+    
 
     public static function cuerpoCSV($nombre, $cantidad, $precioUnidad, $tiempo, $tipo, $seccion)
     {

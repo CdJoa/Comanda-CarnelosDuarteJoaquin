@@ -48,7 +48,7 @@ class PedidoController extends Pedido implements IApiUsable
         $id = $args['id'] ?? null;
         if ($id) {
             $pedido = pedido::obtenerpedido($id);
-            $payload = json_encode($pedido);
+            $payload = json_encode($pedido, JSON_PRETTY_PRINT);
         } else {
             $payload = json_encode(array("mensaje" => "ID no proporcionado"));
         }
@@ -85,6 +85,7 @@ class PedidoController extends Pedido implements IApiUsable
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
     }
+
 
     public function ModificarEstadoProductoEnPedido($request, $response, $args)
     {
@@ -147,13 +148,7 @@ class PedidoController extends Pedido implements IApiUsable
     public function entregarPedido($request, $response, $args)
     {
         $idPedido = $args['id'] ?? null;
-        
-        if (!$idPedido) {
-            $payload = json_encode(["mensaje" => "ID del pedido no proporcionado"]);
-            $response->getBody()->write($payload);
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
-        }
-    
+      
         try {
             $pedido = Pedido::obtenerPedido($idPedido);
             
@@ -194,12 +189,6 @@ class PedidoController extends Pedido implements IApiUsable
     
     public function pagandoPedido($request, $response, $args){
         $idPedido = $args['id'] ?? null;
-        
-        if (!$idPedido) {
-            $payload = json_encode(["mensaje" => "ID del pedido no proporcionado"]);
-            $response->getBody()->write($payload);
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
-        }
     
         try {
             $pedido = Pedido::obtenerPedido($idPedido);
@@ -209,15 +198,20 @@ class PedidoController extends Pedido implements IApiUsable
                 $response->getBody()->write($payload);
                 return $response->withHeader('Content-Type', 'application/json')->withStatus(404);
             }
+            if ($pedido['estado'] === 'pagado') {
+                $payload = json_encode(["mensaje" => "El pedido ya se encuentra pagado"]);
+                $response->getBody()->write($payload);
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+            }
             if ($pedido['estado'] !== 'entregado') {
                 $payload = json_encode(["mensaje" => "El pedido no ha sido entregado"]);
                 $response->getBody()->write($payload);
                 return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
             }
+ 
             $codigoMesa = $pedido['codigoMesa'];
             Mesa::cambiarEstadoMesa($codigoMesa, 'cliente pagando');	
             Pedido::marcarComoPagado($idPedido);
-            Pedido::generarPdf($idPedido);
             $payload = json_encode(["mensaje" => "Pedido entregado con éxito y empleados asignados actualizados"]);
             $response->getBody()->write($payload);
             return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
@@ -252,12 +246,6 @@ class PedidoController extends Pedido implements IApiUsable
     {
         $idPedido = $args['id'] ?? null;
 
-        if (!$idPedido) {
-            $payload = json_encode(["mensaje" => "ID del pedido no proporcionado"]);
-            $response->getBody()->write($payload);
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
-        }
-    
         try {
             $pedido = Pedido::obtenerPedido($idPedido);
     
@@ -294,4 +282,57 @@ class PedidoController extends Pedido implements IApiUsable
             return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
         }
     }
+
+    public static function MozoSacafoto($request, $response, $args)
+    {
+        $idPedido = $args['id'] ?? null;
+
+        try {
+            $pedido = Pedido::obtenerPedido($idPedido);
+            if (!$pedido) {
+                throw new Exception("Pedido no encontrado");
+            }
+
+            if (!isset($_FILES['foto']) || $_FILES['foto']['error'] !== UPLOAD_ERR_OK) {
+                throw new Exception("No se proporcionó una foto o hubo un error en la subida");
+            }
+
+            $rutaFoto = Pedido::sacarFoto($idPedido);
+            $payload = json_encode(["mensaje" => "Foto guardada con éxito", "rutaFoto" => $rutaFoto]);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+
+        } catch (Exception $e) {
+            $payload = json_encode(["error" => $e->getMessage()]);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+        }
+    }
+
+    public static function Codigos($request, $response, $args)
+{
+    $parsedBody = $request->getParsedBody();
+    $codigoMesa = $parsedBody['codigoMesa'] ?? null; 
+    $codigoPedido = $parsedBody['codigoPedido'] ?? null; 
+
+    try {
+        $pedido = Pedido::obtenerPedidoCodigo($codigoPedido);
+        
+        if ($pedido && $pedido->codigoMesa === $codigoMesa) {
+            $payload = json_encode(["tiempoEstimado" => $pedido->tiempoEstimado . " minutos"]);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+        } else {
+            throw new Exception("No se encontró el pedido o el código de mesa no coincide.");
+        }
+
+    } catch (Exception $e) {
+        $payload = json_encode(["error" => $e->getMessage()]);
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+    }
+}
+
+
+    
 }

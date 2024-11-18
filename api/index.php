@@ -60,6 +60,9 @@ $app->group('/productos', function (RouteCollectorProxy $group) {
     
   })->add(new \LoggerMiddleware('socio'));
 
+$app->group('/codigos', function (RouteCollectorProxy $group) {
+$group->get('[/]', \PedidoController::class . ':Codigos');});
+
 
 $app->group('/mesas', function (RouteCollectorProxy $group) {
     $group->put('/', \MesaController::class . ':ModificarUno');
@@ -78,14 +81,16 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
   
     $app->group('/pedidos', function (RouteCollectorProxy $group) {
       $group->post('[/]', \PedidoController::class . ':CargarUno')->add(new \LoggerMiddleware('mozo'));
-  
-      $group->get('[/]', \PedidoController::class . ':TraerTodos')->add(new \LoggerMiddleware('mozo'));
-      $group->get('/{id}', \PedidoController::class . ':TraerUno')->add(new \LoggerMiddleware('mozo'));
-  
-      $group->put('/ModificarEstadoProductoEnPedido/{id}', \PedidoController::class . ':ModificarEstadoProductoEnPedido')
-            ->add(new \LoggerMiddleware('bartender'))
-            ->add(new \LoggerMiddleware('cocinero'))
-            ->add(new \LoggerMiddleware('cervezero'));
+      $group->post('/foto/{id}', \PedidoController::class . ':MozoSacafoto')->add(new \LoggerMiddleware('mozo'));
+
+      $group->get('[/]', \PedidoController::class . ':TraerTodos')->add(new \LoggerMiddleware('socio'));
+      $group->get('/{id}', \PedidoController::class . ':TraerUno')->add(new \LoggerMiddleware('socio'));
+
+
+      $group->put('/ModificarEstadoProductoEnPedido/cocinero/{id}', \PedidoController::class . ':ModificarEstadoProductoEnPedido')->add(new \LoggerMiddleware('cocinero'));
+      $group->put('/ModificarEstadoProductoEnPedido/bartender/{id}', \PedidoController::class . ':ModificarEstadoProductoEnPedido')->add(new \LoggerMiddleware('bartender'));
+      $group->put('/ModificarEstadoProductoEnPedido/cervezero/{id}', \PedidoController::class . ':ModificarEstadoProductoEnPedido')->add(new \LoggerMiddleware('cervezero'));
+
 
       $group->put('/asignarProductoPendiente/{id}', \PedidoController::class . ':asignarProductoPendiente')->add(new \LoggerMiddleware('mozo'));
   

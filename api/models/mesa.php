@@ -6,6 +6,7 @@ class Mesa
     public $estado;
     public $codigoMesa;
     public $codigo_pedido;
+    public $usos;
 
     public function crearMesa()
     {
@@ -50,7 +51,7 @@ class Mesa
     public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, estado,codigoMesa,codigo_pedido FROM mesas");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM mesas");
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Mesa');
@@ -61,17 +62,6 @@ class Mesa
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM mesas WHERE id = :id");
         $consulta->bindValue(':id', $estado, PDO::PARAM_STR);
-        $consulta->execute();
-
-        return $consulta->fetchAll(PDO::FETCH_CLASS, 'Mesa');
-    }
-
-
-    public static function obtenerMesaPorID($id)
-    {
-        $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM mesas WHERE id = :id");
-        $consulta->bindValue(':id', $id, PDO::PARAM_STR);
         $consulta->execute();
 
         return $consulta->fetchAll(PDO::FETCH_CLASS, 'Mesa');
@@ -141,6 +131,12 @@ class Mesa
         $consulta->bindValue(':codigoMesa', $codigoMesa, PDO::PARAM_STR);
         $consulta->execute();
     }
-
+    public static function sumarUso($codigoMesa)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE mesas SET usos = usos + 1 WHERE codigoMesa = :codigoMesa");
+        $consulta->bindValue(':codigoMesa', $codigoMesa, PDO::PARAM_STR);
+        $consulta->execute();
+    }
 }
 ?>
