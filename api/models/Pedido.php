@@ -1,4 +1,6 @@
 <?php
+require_once('tcpdf/tcpdf.php');
+
 class Pedido{
     public $id;
     public $codigoPedido;
@@ -238,6 +240,42 @@ class Pedido{
         $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET estado = 'pagado' WHERE id = :id");
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         $consulta->execute();
+    }
+    public static function generarPdf($id)
+    {
+        $pedido = Pedido::obtenerPedido($id);
+        if ($pedido) {
+            $pdf = new TCPDF();
+            $pdf->AddPage();
+            $pdf->SetFont('helvetica', '', 12);
+            $html = '<h1>Pedido #' . $pedido['codigoPedido'] . '</h1>';
+            
+            $html .= '<p><strong>Cliente:</strong> ' . $pedido['nombreCliente'] . '</p>';
+
+            $html .= '<p><strong>Mesa:</strong> ' . $pedido['codigoMesa'] . '</p>';
+
+            $html .= '<p><strong>Tiempo Estimado:</strong> ' . $pedido['tiempoEstimado'] . ' minutos</p>';
+
+            $html .= '<p><strong>Precio:</strong> $' . $pedido['precio'] . '</p>';
+
+            $html .= '<h2>Productos</h2>';
+            
+            $html .= '<ul>';
+
+            foreach ($pedido['listaProductos'] as $producto) {
+                $html .= '<li>' . $producto['nombre'] . ' - Cantidad: ' . $producto['cantidad'] . '</li>';
+            }
+
+            $html .= '</ul>';
+
+            $pdf->writeHTML($html, true, false, true, false, '');
+
+            $filePath = 'pedidosPDF/pedido_' . $pedido['codigoPedido'] . '.pdf';
+            $pdf->Output($filePath, 'F');
+            return $filePath;
+        } else {
+            throw new Exception("Pedido no encontrado.");
+        }
     }
 }
 ?>

@@ -42,7 +42,7 @@ class LoggerMiddleware
         $response = new Response();
         $payload = json_encode(['mensaje' => 'Clave incorrecta o rol no permitido.']);
         $response->getBody()->write($payload);
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(403); // Forbidden
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(403); 
     }
 
 

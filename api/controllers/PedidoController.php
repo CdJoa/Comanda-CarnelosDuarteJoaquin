@@ -217,7 +217,7 @@ class PedidoController extends Pedido implements IApiUsable
             $codigoMesa = $pedido['codigoMesa'];
             Mesa::cambiarEstadoMesa($codigoMesa, 'cliente pagando');	
             Pedido::marcarComoPagado($idPedido);
-    
+            Pedido::generarPdf($idPedido);
             $payload = json_encode(["mensaje" => "Pedido entregado con éxito y empleados asignados actualizados"]);
             $response->getBody()->write($payload);
             return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
