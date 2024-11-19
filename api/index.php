@@ -71,24 +71,24 @@ $group->get('/MejoresEncuestas', \EncuestaController::class . ':mejoresEncuestas
 
 $app->group('/pdf', function (RouteCollectorProxy $group) {
   $group->get('/listaProductos', \PDFController::class . ':listaProductos');
+  $group->get('/listaUsuarios', \PDFController::class . ':listaUsuarios');
 });
 
 
 
 
 $app->group('/mesas', function (RouteCollectorProxy $group) {
-    $group->put('/', \MesaController::class . ':ModificarUno');
+  $group->put('/', \MesaController::class . ':ModificarUno');
+  $group->put('/cerrarMesa/{codigo}', \MesaController::class . ':cerrarMesa');
+  $group->put('/abrirMesa/{codigo}', \MesaController::class . ':abrirMesa');
 
-    $group->put('/cerrarMesa/{codigo}', \MesaController::class . ':cerrarMesa');
-
-    $group->delete('/{id}', \MesaController::class . ':BorrarUno');
-    $group->get('[/]', \MesaController::class . ':TraerTodos');
-    $group->get('/{nombre}', \MesaController::class . ':TraerUno');
-    $group->get('/TraerUno/{id}', \MesaController::class . ':TraerUno');  
-    $group->post('[/]', \MesaController::class . ':CargarUno');
-    
-  })->add(new \LoggerMiddleware('socio'));
-
+  $group->delete('/{id}', \MesaController::class . ':BorrarUno');
+  $group->get('/masUsada', \MesaController::class . ':mesaMasUsada');
+  $group->get('[/]', \MesaController::class . ':TraerTodos');
+  $group->get('/TraerUno/{id}', \MesaController::class . ':TraerUno');
+  $group->get('/{nombre}', \MesaController::class . ':TraerUno'); 
+  $group->post('[/]', \MesaController::class . ':CargarUno');
+})->add(new \LoggerMiddleware('socio'));
 
   
     $app->group('/pedidos', function (RouteCollectorProxy $group) {

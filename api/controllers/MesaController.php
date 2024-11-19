@@ -34,6 +34,25 @@ class MesaController extends Mesa implements IApiUsable
         return $response->withHeader('Content-Type', 'application/json');
     }
 
+
+
+    public function abrirMesa($request, $response, $args)
+    {
+        $codigo = $args['codigo'] ?? null;
+        if ($codigo) {
+            Mesa::cambiarEstadoMesa($codigo, 'abierta');	
+            $payload = json_encode(array("mensaje" => "Mesa abierta"));
+        } else {
+            $payload = json_encode(array("mensaje" => "error en el codigo"));
+        }
+
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+
+
+
     public function TraerUno($request, $response, $args)
     {
         $id = $args['id'] ?? null;
@@ -51,7 +70,7 @@ class MesaController extends Mesa implements IApiUsable
     public function TraerTodos($request, $response, $args)
     {
         $lista = Mesa::obtenerTodos();
-        $payload = json_encode(array("listamesa" => $lista));
+        $payload = json_encode(array("listamesa" => $lista), JSON_PRETTY_PRINT);
 
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
@@ -95,4 +114,12 @@ class MesaController extends Mesa implements IApiUsable
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
     }
+
+    public static function mesaMasUsada($request, $response, $args){
+        $Usada = mesa::masUsada();
+        $payload = json_encode($Usada, JSON_PRETTY_PRINT);
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
 }

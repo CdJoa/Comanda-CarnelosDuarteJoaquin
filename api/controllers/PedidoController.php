@@ -310,28 +310,28 @@ class PedidoController extends Pedido implements IApiUsable
     }
 
     public static function Codigos($request, $response, $args)
-{
-    $parsedBody = $request->getParsedBody();
-    $codigoMesa = $parsedBody['codigoMesa'] ?? null; 
-    $codigoPedido = $parsedBody['codigoPedido'] ?? null; 
+    {
+        $parsedBody = $request->getParsedBody();
+        $codigoMesa = $parsedBody['codigoMesa'] ?? null; 
+        $codigoPedido = $parsedBody['codigoPedido'] ?? null; 
 
-    try {
-        $pedido = Pedido::obtenerPedidoCodigo($codigoPedido);
-        
-        if ($pedido && $pedido->codigoMesa === $codigoMesa) {
-            $payload = json_encode(["tiempoEstimado" => $pedido->tiempoEstimado . " minutos"]);
+        try {
+            $pedido = Pedido::obtenerPedidoCodigo($codigoPedido);
+            
+            if ($pedido && $pedido->codigoMesa === $codigoMesa) {
+                $payload = json_encode(["tiempoEstimado" => $pedido->tiempoEstimado . " minutos"]);
+                $response->getBody()->write($payload);
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+            } else {
+                throw new Exception("No se encontró el pedido o el código de mesa no coincide.");
+            }
+
+        } catch (Exception $e) {
+            $payload = json_encode(["error" => $e->getMessage()]);
             $response->getBody()->write($payload);
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
-        } else {
-            throw new Exception("No se encontró el pedido o el código de mesa no coincide.");
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
         }
-
-    } catch (Exception $e) {
-        $payload = json_encode(["error" => $e->getMessage()]);
-        $response->getBody()->write($payload);
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
     }
-}
 
 
     

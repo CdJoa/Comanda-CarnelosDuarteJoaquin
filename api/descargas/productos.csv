@@ -1,0 +1,12 @@
+
+nombre,cantidad,precio,tiempo,tipo,seccion
+Pizza,10,8.99,15,comida,cocina
+Hamburguesa,15,5.99,10,comida,cocina
+Ensalada,20,4.99,5,comida,cocina
+Coca Cola,50,1.99,2,bebida,barra de tragos
+Cerveza,30,2.99,2,bebida,chopera
+Pasta,12,7.99,20,comida,cocina
+Sopa,25,3.99,10,comida,cocina
+Agua,40,0.99,2,bebida,barra de tragos
+Té Helado,35,1.49,2,bebida,barra de tragos
+Gelatina,8,3.49,5,postre,candy
