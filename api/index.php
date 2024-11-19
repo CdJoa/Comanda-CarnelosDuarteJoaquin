@@ -20,8 +20,11 @@ require_once __DIR__ . '/controllers/ProductoController.php';
 require_once __DIR__ . '/controllers/MesaController.php';
 require_once __DIR__ . '/controllers/PedidoController.php';
 require_once __DIR__ . '/controllers/CsvController.php';
+require_once __DIR__ . '/controllers/EncuestaController.php';
+require_once __DIR__ . '/controllers/PDfController.php';
 
 require_once __DIR__ . '/utils/AutentificadorJWT.php';
+
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
@@ -60,8 +63,17 @@ $app->group('/productos', function (RouteCollectorProxy $group) {
     
   })->add(new \LoggerMiddleware('socio'));
 
-$app->group('/codigos', function (RouteCollectorProxy $group) {
-$group->get('[/]', \PedidoController::class . ':Codigos');});
+$app->group('/clientes', function (RouteCollectorProxy $group) {
+$group->get('/codigos', \PedidoController::class . ':Codigos');
+$group->post('/encuesta', \EncuestaController::class . ':CargarUno');
+$group->get('/MejoresEncuestas', \EncuestaController::class . ':mejoresEncuestas');});
+
+
+$app->group('/pdf', function (RouteCollectorProxy $group) {
+  $group->get('/listaProductos', \PDFController::class . ':listaProductos');
+});
+
+
 
 
 $app->group('/mesas', function (RouteCollectorProxy $group) {
@@ -99,17 +111,11 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
   
     });
 
-
     $app->group('/auth', function (RouteCollectorProxy $group) {
       $group->post('/login', \TokenController::class . ':crearToken');
       $group->get('/dataToken', \TokenController::class . ':verificarToken');
 
   });
-
-
-
-
-  
 
 $app->get('[/]', function (Request $request, Response $response) {    
     $payload = json_encode(array("mensaje" => "Slim Framework 4 PHP"));

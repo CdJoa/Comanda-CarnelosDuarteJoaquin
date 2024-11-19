@@ -25,7 +25,6 @@ class MesaController extends Mesa implements IApiUsable
         $codigo = $args['codigo'] ?? null;
         if ($codigo) {
             Mesa::cambiarEstadoMesa($codigo, 'cerrada');	
-            Mesa::sumarUso($codigo);
             $payload = json_encode(array("mensaje" => "Mesa cerrada con éxito"));
         } else {
             $payload = json_encode(array("mensaje" => "Código no proporcionado"));

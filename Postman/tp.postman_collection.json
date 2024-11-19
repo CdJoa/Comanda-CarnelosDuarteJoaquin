@@ -293,7 +293,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"usuario\": \"cervezero3\",\r\n    \"clave\": \"birra\",\r\n    \"rol\": \"cervezero\",\r\n\r\n    \r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n}\r\n\r\n\r\n",
+							"raw": "{\r\n    \"usuario\": \"cervezero5\",\r\n    \"clave\": \"birra\",\r\n    \"rol\": \"cervezero\",\r\n\r\n    \r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n}\r\n\r\n\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -565,14 +565,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{    \r\n    \"sector\": \"bartender\",\r\n    \"usuarioM\": \"bartender1\",\r\n    \"claveM\": \"coctel\",\r\n\r\n    \"nombreProducto\": \"daikiri\",\r\n    \"estadoProducto\": \"listo\",\r\n    \"nombreTrabajador\": \"bartender1\"\r\n}\r\n",
+							"raw": "{    \r\n    \"sector\": \"bartender\",\r\n    \"usuarioM\": \"bartender1\",\r\n    \"claveM\": \"coctel\",\r\n\r\n    \"nombreProducto\": \"daikiri\",\r\n    \"estadoProducto\": \"listo\",\r\n    \"nombreTrabajador\": \"bartender3\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:666/pedidos/ModificarEstadoProductoEnPedido/bartender/54"
+						"url": "http://localhost:666/pedidos/ModificarEstadoProductoEnPedido/bartender/57"
 					},
 					"response": []
 				},
@@ -939,7 +939,87 @@
 								}
 							}
 						},
-						"url": "http://localhost:666/codigos"
+						"url": "http://localhost:666/clientes/codigos"
+					},
+					"response": []
+				},
+				{
+					"name": "altaEncuesta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE5NjAxMzEsImV4cCI6MTc5MTk2MDEzMSwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6Im1vem8xIiwicm9sIjoibW96byJ9LCJhcHAiOiJUZXN0IEpXVCJ9.56KVBeYVFb8NlsiNTkG2SwJY3LzzMJRhYOEY_hlCE5A",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombreCliente\" :\"test\",\r\n    \"codigoPedido\": \"g7xau\",\r\n    \"restaurante\":1,\r\n    \"mozo\": 1,\r\n    \"cocinero\": 1,\r\n    \"texto\" : \"malisimo\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:666/clientes/encuesta"
+					},
+					"response": []
+				},
+				{
+					"name": "mejoresEncuestas",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE5NjAxMzEsImV4cCI6MTc5MTk2MDEzMSwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6Im1vem8xIiwicm9sIjoibW96byJ9LCJhcHAiOiJUZXN0IEpXVCJ9.56KVBeYVFb8NlsiNTkG2SwJY3LzzMJRhYOEY_hlCE5A",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombreCliente\" :\"test\",\r\n    \"codigoPedido\": \"g7xau\",\r\n    \"restaurante\": 8,\r\n    \"mozo\": 7,\r\n    \"cocinero\": 10,\r\n    \"texto\" : \"muy bueno\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:666/clientes/MejoresEncuestas"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PDF",
+			"item": [
+				{
+					"name": "PdfProductos",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "archivo",
+									"type": "file",
+									"src": "/C:/xampp/htdocs/Comanda-CarnelosDuarteJoaquin/api/csv/productos.csv"
+								}
+							]
+						},
+						"url": "http://localhost:666/pdf/listaProductos"
 					},
 					"response": []
 				}

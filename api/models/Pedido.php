@@ -46,6 +46,8 @@ class Pedido{
         $this->id = $objAccesoDatos->obtenerUltimoId();
     
         Mesa::IngresarCodigoPedidoCambiarEstado($this->codigoMesa, $this->codigoPedido);
+        Mesa::sumarUso($this->codigoMesa);
+
     
         return $this->id;
     }
