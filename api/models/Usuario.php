@@ -187,5 +187,26 @@ class Usuario
         $consulta->execute();
     }
 
+    public static function obtenerUsuariosAlta30Dias()
+    {
+        $fechaHoy = date('Y-m-d');
+        
+        $fechaHace30Dias = date('Y-m-d', strtotime('-30 days', strtotime($fechaHoy)));
+
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id FROM usuarios WHERE fecha_alta >= :fechaHace30Dias");
+        $consulta->bindValue(':fechaHace30Dias', $fechaHace30Dias, PDO::PARAM_STR);
+        $consulta->execute();
+        $ids = $consulta->fetchAll(PDO::FETCH_COLUMN, 0);
+        $cantidad = count($ids);
+
+        return [
+            'ids' => $ids,
+            'cantidad' => $cantidad
+        ];
+        return $consulta->fetchAll(PDO::FETCH_COLUMN, 0);
+    }
+
+
 }
 ?>

@@ -8,7 +8,9 @@ class Pedido{
     public $codigoMesa;
     public $tiempoEstimado; 
     public $precio; 
+
     public $listaProductos = array();
+    public $fecha; 
 
     public function crearPedido($listaProductos)
     {
@@ -27,12 +29,13 @@ class Pedido{
         $this->estado = 'pendiente';
         $this->tiempoEstimado = Pedido::CalcularTiempoEstimado($listaProductos);
         $this->precio = Pedido::CalcularPrecio($listaProductos);
+        $this->fecha = date('Y-m-d');
     
         $productosJson = json_encode($listaProductos);
     
         error_log("Lista de productos en JSON: " . $productosJson);
     
-        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (codigoPedido, nombreCliente, estado, codigoMesa, tiempoEstimado, precio, listaProductos) VALUES (:codigoPedido, :nombreCliente, :estado, :codigoMesa, :tiempoEstimado, :precio, :listaProductos)");
+        $consulta = $objAccesoDatos->prepararConsulta("INSERT INTO pedidos (codigoPedido, nombreCliente, estado, codigoMesa, tiempoEstimado, precio, listaProductos, fecha) VALUES (:codigoPedido, :nombreCliente, :estado, :codigoMesa, :tiempoEstimado, :precio, :listaProductos, :fecha)");
         $consulta->bindValue(':nombreCliente', $this->nombreCliente, PDO::PARAM_STR);
         $consulta->bindValue(':codigoMesa', $this->codigoMesa, PDO::PARAM_STR);
         $consulta->bindValue(':estado', $this->estado, PDO::PARAM_STR);
@@ -40,9 +43,8 @@ class Pedido{
         $consulta->bindValue(':precio', $this->precio, PDO::PARAM_INT);
         $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
         $consulta->bindValue(':listaProductos', $productosJson, PDO::PARAM_STR);
-    
+        $consulta->bindValue(':fecha', $this->fecha, PDO::PARAM_STR);
         $consulta->execute();
-    
         $this->id = $objAccesoDatos->obtenerUltimoId();
     
         Mesa::IngresarCodigoPedidoCambiarEstado($this->codigoMesa, $this->codigoPedido);
@@ -68,7 +70,7 @@ class Pedido{
         public static function obtenerTodos()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, codigoPedido, estado, nombreCliente, codigoMesa, tiempoEstimado, precio, listaProductos FROM pedidos");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedidos");
         $consulta->execute();
 
         $pedidos = $consulta->fetchAll(PDO::FETCH_ASSOC);
@@ -84,7 +86,7 @@ class Pedido{
     public static function obtenerPedido($id)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("SELECT id, codigoPedido, estado, nombreCliente, codigoMesa, tiempoEstimado, precio, listaProductos FROM pedidos WHERE id = :id");
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT * FROM pedidos WHERE id = :id");
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
         $consulta->execute();
 
@@ -148,57 +150,79 @@ class Pedido{
 
         $consulta->execute();
     }
-
-    public static function asignarTrabajadorAProducto($nombreProducto, $cantidad) {
-        $producto = Producto::obtenerProducto($nombreProducto);
-    
-        if ($producto) {
-            $seccionProducto = $producto['seccion'];
-            $empleadoAsignado = null;
-    
-            switch ($seccionProducto) {
-                case 'cocina':
-                    $empleadoAsignado = Usuario::obtener1UsuarioLibresPorRol('cocinero');
-                    break;
-                case 'chopera':
-                    $empleadoAsignado = Usuario::obtener1UsuarioLibresPorRol('cervezero');
-                    break;
-                case 'tragos':
-                    $empleadoAsignado = Usuario::obtener1UsuarioLibresPorRol('bartender');
-                    break;
-                default:
-                    throw new Exception("Sección de producto no válida.");
-            }
-    
-            if ($empleadoAsignado) {
-                $producto['empleadoAsignado'] = $empleadoAsignado['usuario']; 
-                Usuario::cambiarAEstadoOcupado($empleadoAsignado['id']);
-                return [
-                    'nombre' => $producto['nombre'],  
-                    'cantidad' => $cantidad,         
-                    'empleadoAsignado' => $empleadoAsignado['usuario'],
-                    'estado' => 'preparandose'
-                ];        
-            } else {
-                return [
-                    'nombre' => $producto['nombre'],  
-                    'cantidad' => $cantidad,         
-                    'empleadoAsignado' => null,
-                    'estado' => 'pendiente'
-                ];
-            }
-        } else {
-            throw new Exception("Producto no encontrado: $nombreProducto.");
-        }
-    }
-    
     public static function asignarTrabajador($listaProductos) {
         foreach ($listaProductos as &$producto) {
-            $producto = self::asignarTrabajadorAProducto($producto['nombre'], $producto['cantidad']);
+            $productoObtenido = Producto::obtenerProducto($producto['nombre']);
+            if ($productoObtenido) {
+                $seccionProducto = $productoObtenido['seccion'];
+                $cantidad = $producto['cantidad'];
+                $tiempoEstimado = $productoObtenido['tiempo'];
+                $productosAsignados = [];
+    
+                switch ($seccionProducto) {
+                    case 'cocina':
+                        for ($i = 0; $i < $cantidad; $i++) {
+                            $empleadoAsignado = Usuario::obtener1UsuarioLibresPorRol('cocinero');
+                            if ($empleadoAsignado) {
+                                $productosAsignados[] = [
+                                    'nombre' => $producto['nombre'],
+                                    'cantidad' => 1,
+                                    'empleadoAsignado' => $empleadoAsignado['usuario'],
+                                    'estado' => 'preparandose',
+                                    'tiempoEstimado' => $tiempoEstimado * rand(10, 13) / 10
+                                ];
+                                Usuario::cambiarAEstadoOcupado($empleadoAsignado['id']);
+                            } else {
+                                $productosAsignados[] = [
+                                    'nombre' => $producto['nombre'],
+                                    'cantidad' => 1,
+                                    'empleadoAsignado' => null,
+                                    'estado' => 'pendiente',
+                                    'tiempoEstimado' => 'pendiente'
+                                ];
+                            }
+                        }
+                        break;
+                    case 'chopera':
+                    case 'tragos':
+                        for ($i = 0; $i < $cantidad; $i++) {
+                            if ($i % 5 == 0) {
+                                $empleadoAsignado = Usuario::obtener1UsuarioLibresPorRol($seccionProducto == 'chopera' ? 'cervezero' : 'bartender');
+                            }
+                            if ($empleadoAsignado) {
+                                $productosAsignados[] = [
+                                    'nombre' => $producto['nombre'],
+                                    'cantidad' => min(5, $cantidad - $i),
+                                    'empleadoAsignado' => $empleadoAsignado['usuario'],
+                                    'estado' => 'preparandose',
+                                    'tiempoEstimado' => $tiempoEstimado * rand(10, 13) / 10
+                                ];
+                                Usuario::cambiarAEstadoOcupado($empleadoAsignado['id']);
+                            } else {
+                                $productosAsignados[] = [
+                                    'nombre' => $producto['nombre'],
+                                    'cantidad' => min(5, $cantidad - $i),
+                                    'empleadoAsignado' => null,
+                                    'estado' => 'pendiente',
+                                    'tiempoEstimado' => 'pendiente'
+                                ];
+                            }
+                        }
+                        break;
+                    default:
+                        throw new Exception("Sección de producto no válida.");
+                }
+    
+                $producto['asignaciones'] = $productosAsignados;
+            } else {
+                throw new Exception("Producto no encontrado: " . $producto['nombre']);
+            }
         }
         return $listaProductos;
     }
-
+    
+    
+    
     public static function CalcularTiempoEstimado($listaProductos)
     {
         $tiempoMaximo = 0;
@@ -266,5 +290,25 @@ class Pedido{
             throw new Exception("Pedido no encontrado.");
         }
     }
+    public static function obtenerPedidosUltimos30Dias()
+    {
+        $fechaHoy = date('Y-m-d');
+        
+        $fechaHace30Dias = date('Y-m-d', strtotime('-30 days', strtotime($fechaHoy)));
+
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT id FROM pedidos WHERE fecha >= :fechaHace30Dias");
+        $consulta->bindValue(':fechaHace30Dias', $fechaHace30Dias, PDO::PARAM_STR);
+        $consulta->execute();
+        $ids = $consulta->fetchAll(PDO::FETCH_COLUMN, 0);
+        $cantidad = count($ids);
+
+        return [
+            'ids' => $ids,
+            'cantidad' => $cantidad
+        ];
+        return $consulta->fetchAll(PDO::FETCH_COLUMN, 0);
+    }
+
 }
 ?>

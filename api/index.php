@@ -22,6 +22,7 @@ require_once __DIR__ . '/controllers/PedidoController.php';
 require_once __DIR__ . '/controllers/CsvController.php';
 require_once __DIR__ . '/controllers/EncuestaController.php';
 require_once __DIR__ . '/controllers/PDfController.php';
+require_once __DIR__ . '/controllers/estadisticasController.php';
 
 require_once __DIR__ . '/utils/AutentificadorJWT.php';
 
@@ -116,6 +117,14 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
       $group->get('/dataToken', \TokenController::class . ':verificarToken');
 
   });
+
+  $app->group('/estadisticas30', function (RouteCollectorProxy $group) {
+    $group->get('/pedidos', \estadisticasController::class . ':obtenerPedidosUltimos30Dias');
+    $group->get('/altaUsuarios', \estadisticasController::class . ':obtenerUsuariossAltaUltimos30Dias');
+
+  });
+
+
 
 $app->get('[/]', function (Request $request, Response $response) {    
     $payload = json_encode(array("mensaje" => "Slim Framework 4 PHP"));

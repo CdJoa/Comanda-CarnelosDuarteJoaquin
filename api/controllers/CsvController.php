@@ -46,18 +46,6 @@ class CsvController
         }
     }
 
-    
-    public static function DescargarProductoCSV(Request $request, Response $response){
-        $productos = Producto::obtenerTodos();
-        $csv = fopen(__DIR__ . '/../descargas/productosDescargados.csv', 'w');
-        fputcsv($csv, ['id', 'nombre', 'cantidad', 'precioUnidad', 'tipo', 'seccion', 'tiempo']);
-        foreach ($productos as $producto) {
-            fputcsv($csv, [$producto->id, $producto->nombre, $producto->cantidad, $producto->precioUnidad, $producto->tipo, $producto->seccion, $producto->tiempo]);
-        }
-        fclose($csv);
-        $response->getBody()->write(json_encode(['message' => 'Archivo CSV generado']));
-        return $response->withHeader('Content-Type', 'application/json');
-    }
 
     public static function guardarUsuario(Request $request, Response $response): Response
     {
@@ -80,44 +68,76 @@ class CsvController
         }
     }
 
-    public static function DescargarUsuarioCSV(Request $request, Response $response){
-        $usuarios = Usuario::obtenerTodos();
-        $csv = fopen(__DIR__ . '/../descargas/usuariosDescargados.csv', 'w');
-        fputcsv($csv, ['id', 'usuario', 'clave', 'rol', 'estado', 'fecha_alta']);
-        foreach ($usuarios as $usuario) {
-            fputcsv($csv, [$usuario->id, $usuario->usuario, $usuario->clave, $usuario->rol, $usuario->estado, $usuario->fecha_alta]);
+    public static function DescargarProductoCSV(Request $request, Response $response) {
+        $productos = Producto::obtenerTodos();
+    
+        $output = fopen('php://temp', 'w');
+        fputcsv($output, ['id', 'nombre', 'cantidad', 'precioUnidad', 'tipo', 'seccion', 'tiempo']);
+    
+        foreach ($productos as $producto) {
+            fputcsv($output, [$producto->id, $producto->nombre, $producto->cantidad, $producto->precioUnidad, $producto->tipo, $producto->seccion, $producto->tiempo]);
         }
-        fclose($csv);
-        $response->getBody()->write(json_encode(['message' => 'Archivo CSV generado']));
-        return $response->withHeader('Content-Type', 'application/json');
+    
+        rewind($output);
+        $csvContent = stream_get_contents($output);
+        fclose($output);
+    
+        $response->getBody()->write($csvContent);
+        return $response
+            ->withHeader('Content-Type', 'text/csv')
+            ->withHeader('Content-Disposition', 'attachment; filename="productosDescargados.csv"');
     }
-    public static function DescargarPedidoCSV(Request $request, Response $response){
-        $pedidos = Pedido::obtenerTodos(); 
-        $rutaArchivo = __DIR__ . '/../descargas/pedidosDescargados.csv';
-        $csv = fopen($rutaArchivo, 'w');
-        
-        fputcsv($csv, ['id', 'codigoPedido', 'estado', 'nombreCliente', 'codigoMesa', 'tiempoEstimado', 'precio', 'listaProductos']);
+    
+    public static function DescargarUsuarioCSV(Request $request, Response $response) {
+        $usuarios = Usuario::obtenerTodos();
+    
+        $output = fopen('php://temp', 'w');
+        fputcsv($output, ['id', 'usuario', 'clave', 'rol', 'estado', 'fecha_alta']);
+    
+        foreach ($usuarios as $usuario) {
+            fputcsv($output, [$usuario->id, $usuario->usuario, $usuario->clave, $usuario->rol, $usuario->estado, $usuario->fecha_alta]);
+        }
+    
+        rewind($output);
+        $csvContent = stream_get_contents($output);
+        fclose($output);
+    
+        $response->getBody()->write($csvContent);
+        return $response
+            ->withHeader('Content-Type', 'text/csv')
+            ->withHeader('Content-Disposition', 'attachment; filename="usuariosDescargados.csv"');
+    }
+    
+    public static function DescargarPedidoCSV(Request $request, Response $response) {
+        $pedidos = Pedido::obtenerTodos();
+    
+        $output = fopen('php://temp', 'w');
+        fputcsv($output, ['id', 'codigoPedido', 'estado', 'nombreCliente', 'codigoMesa', 'tiempoEstimado', 'precio', 'listaProductos']);
     
         foreach ($pedidos as $pedido) {
             $productos = json_encode($pedido['listaProductos'], JSON_UNESCAPED_UNICODE);
     
             $fila = [
-                $pedido['id'] ?? '', 
-                $pedido['codigoPedido'] ?? '', 
-                $pedido['estado'] ?? '', 
-                $pedido['nombreCliente'] ?? '', 
-                $pedido['codigoMesa'] ?? '', 
-                $pedido['tiempoEstimado'] ?? '', 
-                $pedido['precio'] ?? '', 
+                $pedido['id'] ?? '',
+                $pedido['codigoPedido'] ?? '',
+                $pedido['estado'] ?? '',
+                $pedido['nombreCliente'] ?? '',
+                $pedido['codigoMesa'] ?? '',
+                $pedido['tiempoEstimado'] ?? '',
+                $pedido['precio'] ?? '',
                 $productos ?? ''
             ];
-            fputcsv($csv, $fila);
+            fputcsv($output, $fila);
         }
     
-        fclose($csv);
+        rewind($output);
+        $csvContent = stream_get_contents($output);
+        fclose($output);
     
-        $response->getBody()->write(json_encode(['message' => 'Archivo CSV generado']));
-        return $response->withHeader('Content-Type', 'application/json');
+        $response->getBody()->write($csvContent);
+        return $response
+            ->withHeader('Content-Type', 'text/csv')
+            ->withHeader('Content-Disposition', 'attachment; filename="pedidosDescargados.csv"');
     }
     
 }

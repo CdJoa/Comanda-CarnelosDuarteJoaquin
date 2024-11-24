@@ -114,7 +114,7 @@
 								}
 							]
 						},
-						"url": "http://localhost:666/usuarios/16"
+						"url": "http://localhost:666/usuarios/27"
 					},
 					"response": []
 				},
@@ -142,33 +142,6 @@
 			"name": "mesa",
 			"item": [
 				{
-					"name": "pedidos Copy",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{   \r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n}\r\n\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "http://localhost:666/pedidos"
-					},
-					"response": []
-				},
-				{
 					"name": "mesas",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -192,6 +165,33 @@
 							}
 						},
 						"url": "http://localhost:666/mesas"
+					},
+					"response": []
+				},
+				{
+					"name": "mesas mas usada",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:666/mesas/masUsada"
 					},
 					"response": []
 				},
@@ -264,14 +264,38 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{       \r\n    \"nombreProducto\": \"empanada\",\r\n    \"estadoProducto\": \"listo\"\r\n}\r\n",
+							"raw": "{       \r\n    \r\n\r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n\r\n\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:666/pedidos/modificarEstado/40"
+						"url": "http://localhost:666/mesas/cerrarMesa/bgmj3"
+					},
+					"response": []
+				},
+				{
+					"name": "abirMesa",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:666/mesas/abrirMesa/7fgpm"
 					},
 					"response": []
 				}
@@ -346,13 +370,13 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE5NjAxMzEsImV4cCI6MTc5MTk2MDEzMSwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6Im1vem8xIiwicm9sIjoibW96byJ9LCJhcHAiOiJUZXN0IEpXVCJ9.56KVBeYVFb8NlsiNTkG2SwJY3LzzMJRhYOEY_hlCE5A",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{       \r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\",\r\n    \r\n    \"nombreCliente\": \"joaquito\",\r\n    \"listaProductos\": [\r\n        {\"nombre\": \"milanesa a caballo\", \"cantidad\": 1},\r\n\r\n        {\"nombre\": \"hamburguesa de garbanzo\", \"cantidad\": 2},\r\n\r\n        {\"nombre\": \"corona\", \"cantidad\": 1},\r\n\r\n        {\"nombre\": \"daikiri\", \"cantidad\": 1}\r\n\r\n    ]\r\n}\r\n",
+							"raw": "{       \r\n    \"sector\": \"mozo\",\r\n    \"usuarioM\": \"mozo1\",\r\n    \"claveM\": \"bandeja\",\r\n    \r\n    \"nombreCliente\": \"test\",\r\n    \"listaProductos\": [\r\n\r\n        {\"nombre\": \"daikiri\", \"cantidad\": 1}\r\n\r\n    ]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -367,10 +391,16 @@
 					"name": "altaProducto",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{       \r\n    \"nombre\": \"t\",\r\n    \"cantidad\": 1000,\r\n    \"precioUnidad\": 20,\r\n    \"tipo\": \"bebida\",\r\n    \"seccion\" : \"e\",\r\n    \"tiempo\": 2\r\n}\r\n",
+							"raw": "{       \r\n    \"nombre\": \"daikiri\",\r\n    \"cantidad\": 1000,\r\n    \"precioUnidad\": 30,\r\n    \"tipo\": \"bebida\",\r\n    \"seccion\" : \"tragos\",\r\n    \"tiempo\": 5,\r\n\r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n\r\n\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -553,6 +583,30 @@
 					"response": []
 				},
 				{
+					"name": "modificarEstadoPedido Cocinero2",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE5NjM1MDUsImV4cCI6MTc5MTk2MzUwNSwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6ImNvY2luZXJvMSIsInJvbCI6ImNvY2luZXJvIn0sImFwcCI6IlRlc3QgSldUIn0.JcYXzUykNIp1KgkHmcn5p8u1JcyUlZfV8PS7r4OyGLs",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{    \r\n    \"sector\": \"cocinero\",\r\n    \"usuarioM\": \"cocinero3\",\r\n    \"claveM\": \"cuchillo\",\r\n\r\n    \"nombreProducto\": \"hamburguesa de garbanzo\",\r\n    \"estadoProducto\": \"listo\",\r\n    \"nombreTrabajador\": \"cocinero3\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:666/pedidos/ModificarEstadoProductoEnPedido/cocinero/54"
+					},
+					"response": []
+				},
+				{
 					"name": "modificarEstadoPedido Bartender",
 					"request": {
 						"method": "PUT",
@@ -604,17 +658,23 @@
 					"name": "asignarProductoPendiente",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE5NjAxMzEsImV4cCI6MTc5MTk2MDEzMSwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6Im1vem8xIiwicm9sIjoibW96byJ9LCJhcHAiOiJUZXN0IEpXVCJ9.56KVBeYVFb8NlsiNTkG2SwJY3LzzMJRhYOEY_hlCE5A",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{       \r\n    \"nombreProducto\": \"empanada\",\r\n    \"estadoProducto\": \"listo\"\r\n}\r\n",
+							"raw": "{       \r\n    \"sector\": \"mozo\",\r\n    \"usuarioM\": \"mozo1\",\r\n    \"claveM\": \"bandeja\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:666/pedidos/modificarEstado/40"
+						"url": "http://localhost:666/pedidos/asignarProductoPendiente/54"
 					},
 					"response": []
 				},
@@ -638,7 +698,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:666/pedidos/entregarPedido/54"
+						"url": "http://localhost:666/pedidos/entregarPedido/57"
 					},
 					"response": []
 				},
@@ -662,7 +722,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:666/pedidos/entregarPedido/54"
+						"url": "http://localhost:666/pedidos/pagandoPedido/57"
 					},
 					"response": []
 				},
@@ -775,10 +835,28 @@
 				},
 				{
 					"name": "Traer1Usario",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": [],
-						"url": "http://localhost:666/usuarios/paparazi"
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:666/usuarios/cocinero2"
 					},
 					"response": []
 				},
@@ -786,10 +864,16 @@
 					"name": "modificarUsuario",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{       \r\n    \"usuario\": \"messi\",\r\n    \"clave\": \"ladygaga\",\r\n    \"rol\": \"mozo\"\r\n}\r\n\r\n ",
+							"raw": "{       \r\n    \"usuario\": \"cocinero1\",\r\n    \"clave\": \"cuchillo\",\r\n    \"rol\": \"cocinero\",\r\n    \r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n\r\n}\r\n\r\n ",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -797,7 +881,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:666/usuarios/?id=14",
+							"raw": "http://localhost:666/usuarios/?id=112",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -810,7 +894,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "14"
+									"value": "112"
 								}
 							]
 						}
@@ -821,34 +905,23 @@
 					"name": "usuarioEstadoLibre",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{       \r\n    \"usuario\": \"messi\",\r\n    \"clave\": \"ladygaga\",\r\n    \"rol\": \"mozo\"\r\n}\r\n\r\n ",
+							"raw": "{       \r\n    \"usuario\": \"cocineroTest\",\r\n    \"clave\": \"cuchillo\",\r\n    \"rol\": \"cocinero\",\r\n\r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n}\r\n\r\n ",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": {
-							"raw": "http://localhost:666/usuarios/?id=14",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "666",
-							"path": [
-								"usuarios",
-								""
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "14"
-								}
-							]
-						}
+						"url": "http://localhost:666/usuarios/pasarALibre/cocinero2"
 					},
 					"response": []
 				}
@@ -864,7 +937,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n            \"nombre\": \"cocacola light\",\r\n            \"cantidad\": 1000,\r\n            \"precioUnidad\": \"10.00\",\r\n            \"tipo\": \"bebida\",\r\n            \"tiempo\": 2\r\n        }",
+							"raw": "     {\r\n            \"id\": 13,\r\n            \"nombre\": \"empanada\",\r\n            \"cantidad\": 1000,\r\n            \"precioUnidad\": \"30.00\",\r\n            \"tiempo\": 20,\r\n            \"tipo\": \"comida\",\r\n            \"seccion\": \"cocina\"\r\n        }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -872,7 +945,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:666/productos/?id=3",
+							"raw": "http://localhost:666/productos/?id=13",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -885,7 +958,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "3"
+									"value": "13"
 								}
 							]
 						}
@@ -1020,6 +1093,51 @@
 							]
 						},
 						"url": "http://localhost:666/pdf/listaProductos"
+					},
+					"response": []
+				},
+				{
+					"name": "PdfUsuarios",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "archivo",
+									"type": "file",
+									"src": "/C:/xampp/htdocs/Comanda-CarnelosDuarteJoaquin/api/csv/productos.csv"
+								}
+							]
+						},
+						"url": "http://localhost:666/pdf/listaProductos"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "estadisticas",
+			"item": [
+				{
+					"name": "pedidos30dias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:666/estadisticas30/pedidos"
+					},
+					"response": []
+				},
+				{
+					"name": "pedidos30dias Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:666/estadisticas30/pedidos"
 					},
 					"response": []
 				}

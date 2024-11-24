@@ -1,5 +1,16 @@
 id,nombre,cantidad,precioUnidad,tipo,seccion,tiempo
-14,milanesa,1000,50.00,comida,cocina,2
-38,Pizza,10,8.99,comida,comida,15
-41,"Coca Cola",50,1.99,bebida,bebida,2
-45,Agua,40,0.99,bebida,bebida,2
+59,"milanesa a caballo",2000,50.00,comida,cocina,20
+60,"hamburguesa de garbanzo",1000,40.00,comida,cocina,20
+61,corona,1000,20.00,bebida,chopera,2
+62,daikiri,1000,30.00,bebida,tragos,5
+63,nombre,0,0.00,tipo,seccion,0
+64,Pizza,10,8.99,comida,cocina,15
+65,Hamburguesa,15,5.99,comida,cocina,10
+66,Ensalada,20,4.99,comida,cocina,5
+67,"Coca Cola",50,1.99,bebida,"barra de tragos",2
+68,Cerveza,30,2.99,bebida,chopera,2
+69,Pasta,12,7.99,comida,cocina,20
+70,Sopa,25,3.99,comida,cocina,10
+71,Agua,40,0.99,bebida,"barra de tragos",2
+72,"Té Helado",35,1.49,bebida,"barra de tragos",2
+73,Gelatina,8,3.49,postre,candy,5

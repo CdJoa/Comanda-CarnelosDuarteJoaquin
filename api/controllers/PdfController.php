@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 class PDFController
 {
-    public static function generarPDF($titulo, $contenido, $carpetaDestino = './Fotos-PDF')
+    public static function generarPDF($titulo, $contenido)
     {
         $pdf = new TCPDF();
         $pdf->AddPage();
@@ -29,17 +29,9 @@ class PDFController
         foreach ($contenido as $linea) {
             $pdf->Cell(0, 10, $linea, 0, 1);
         }
-        $pathCarpeta = __DIR__ . '/../' . $carpetaDestino;
-        if (!is_dir($pathCarpeta)) {
-            mkdir($pathCarpeta, 0777, true);
-        }
 
-        $nombreArchivo = $pathCarpeta . DIRECTORY_SEPARATOR . str_replace(' ', '_', $titulo) . '.pdf';
-        $pdf->Output($nombreArchivo, 'F');
-
-        return $nombreArchivo;
+        return $pdf->Output('', 'S'); 
     }
-
 
     public static function listaProductos($request, $response, $args)
     {
@@ -47,16 +39,16 @@ class PDFController
 
         $contenido = [];
         foreach ($productos as $producto) {
-            $contenido[] = "ID: " . $producto->id .  $producto->nombre . " - Precio: " . $producto->precioUnidad;
+            $contenido[] = "ID: " . $producto->id . " - " . $producto->nombre . " - Precio: " . $producto->precioUnidad;
         }
 
         try {
             $titulo = "Lista de Productos";
-            $archivoPDF = self::generarPDF($titulo, $contenido);
+            $pdfContenido = self::generarPDF($titulo, $contenido);
 
             $response = $response->withHeader('Content-Type', 'application/pdf')
                                  ->withHeader('Content-Disposition', 'inline; filename="productos.pdf"');
-            $response->getBody()->write(file_get_contents($archivoPDF));
+            $response->getBody()->write($pdfContenido);
 
             return $response;
         } catch (Exception $e) {
@@ -77,11 +69,11 @@ class PDFController
 
         try {
             $titulo = "Lista de Usuarios";
-            $archivoPDF = self::generarPDF($titulo, $contenido);
+            $pdfContenido = self::generarPDF($titulo, $contenido);
 
             $response = $response->withHeader('Content-Type', 'application/pdf')
                                  ->withHeader('Content-Disposition', 'inline; filename="usuarios.pdf"');
-            $response->getBody()->write(file_get_contents($archivoPDF));
+            $response->getBody()->write($pdfContenido);
 
             return $response;
         } catch (Exception $e) {

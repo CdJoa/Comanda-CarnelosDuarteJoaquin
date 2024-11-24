@@ -34,6 +34,7 @@ CREATE TABLE `usuarios` (
   `clave` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `rol` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `estado` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fecha_alta` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
