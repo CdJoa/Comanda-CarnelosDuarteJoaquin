@@ -121,6 +121,8 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
   $app->group('/estadisticas30', function (RouteCollectorProxy $group) {
     $group->get('/pedidos', \estadisticasController::class . ':obtenerPedidosUltimos30Dias');
     $group->get('/altaUsuarios', \estadisticasController::class . ':obtenerUsuariossAltaUltimos30Dias');
+    $group->get('/encuestas', \estadisticasController::class . ':obtenerEncuestasUltimos30Dias');
+
 
   });
 

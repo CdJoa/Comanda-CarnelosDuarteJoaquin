@@ -20,7 +20,7 @@
 								{
 									"key": "archivo",
 									"type": "file",
-									"src": "/C:/xampp/htdocs/Comanda-CarnelosDuarteJoaquin/api/csv/productos.csv"
+									"src": "/C:/xampp/htdocs/Comanda-CarnelosDuarteJoaquin/api/descargas/productos.csv"
 								}
 							]
 						},
@@ -261,7 +261,13 @@
 					"name": "CerrarMesa",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{       \r\n    \r\n\r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n\r\n\r\n}\r\n",
@@ -311,13 +317,13 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2NjcwNzYsImV4cCI6MTc5MjY2NzA3NiwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMyIsInJvbCI6InNvY2lvIn0sImFwcCI6IlRlc3QgSldUIn0.OToC3r9vrreGGxDDWMyDG3Qu9BF8YZRdGKIrAUo7Kdg",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"usuario\": \"cervezero5\",\r\n    \"clave\": \"birra\",\r\n    \"rol\": \"cervezero\",\r\n\r\n    \r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n}\r\n\r\n\r\n",
+							"raw": "{\r\n    \"usuario\": \"cocinero6\",\r\n    \"clave\": \"cuchillo\",\r\n    \"rol\": \"cocinero\",\r\n\r\n    \r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n}\r\n\r\n\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -370,13 +376,13 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE5NjAxMzEsImV4cCI6MTc5MTk2MDEzMSwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6Im1vem8xIiwicm9sIjoibW96byJ9LCJhcHAiOiJUZXN0IEpXVCJ9.56KVBeYVFb8NlsiNTkG2SwJY3LzzMJRhYOEY_hlCE5A",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2NjcwNzYsImV4cCI6MTc5MjY2NzA3NiwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMyIsInJvbCI6InNvY2lvIn0sImFwcCI6IlRlc3QgSldUIn0.OToC3r9vrreGGxDDWMyDG3Qu9BF8YZRdGKIrAUo7Kdg",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{       \r\n    \"sector\": \"mozo\",\r\n    \"usuarioM\": \"mozo1\",\r\n    \"claveM\": \"bandeja\",\r\n    \r\n    \"nombreCliente\": \"test\",\r\n    \"listaProductos\": [\r\n\r\n        {\"nombre\": \"daikiri\", \"cantidad\": 1}\r\n\r\n    ]\r\n}\r\n",
+							"raw": "{       \r\n    \"sector\": \"mozo\",\r\n    \"usuarioM\": \"mozo1\",\r\n    \"claveM\": \"bandeja\",\r\n    \r\n    \"nombreCliente\": \"Correcion\",\r\n    \"listaProductos\": [\r\n\r\n        {\"nombre\": \"milanesa a caballo\", \"cantidad\": 2},\r\n        {\"nombre\": \"hamburguesa de garbanzo\", \"cantidad\": 1},\r\n        {\"nombre\": \"corona\", \"cantidad\": 1},\r\n        {\"nombre\": \"daikiri\", \"cantidad\": 6}\r\n\r\n\r\n    ]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -394,7 +400,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2NjcwNzYsImV4cCI6MTc5MjY2NzA3NiwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMyIsInJvbCI6InNvY2lvIn0sImFwcCI6IlRlc3QgSldUIn0.OToC3r9vrreGGxDDWMyDG3Qu9BF8YZRdGKIrAUo7Kdg",
 								"type": "text"
 							}
 						],
@@ -418,7 +424,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2NjcwNzYsImV4cCI6MTc5MjY2NzA3NiwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMyIsInJvbCI6InNvY2lvIn0sImFwcCI6IlRlc3QgSldUIn0.OToC3r9vrreGGxDDWMyDG3Qu9BF8YZRdGKIrAUo7Kdg",
 								"type": "text"
 							}
 						],
@@ -455,7 +461,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"usuario\": \"socio3\",\r\n    \"rol\": \"socio\"\r\n}",
+							"raw": "{\r\n    \"usuario\": \"cervezero1\",\r\n    \"rol\": \"cervezero\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -476,7 +482,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTMyODgsImV4cCI6MTc5MTc5MzI4OCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6ImFsZWpvIiwicm9sIjoibW96byJ9LCJhcHAiOiJUZXN0IEpXVCJ9.iwX3z5JA_8CGDZ2aRUdU5dDZ2Q8n9KNBuUz0bjtZNY0",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2Njc0MzgsImV4cCI6MTc5MjY2NzQzOCwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6Im1vem8xIiwicm9sIjoibW96byJ9LCJhcHAiOiJUZXN0IEpXVCJ9.1Vk8lC7ewHCvcyRSyOgL60CAlFDVO5MtCWgjIGiP4MQ",
 								"type": "text"
 							},
 							{
@@ -514,7 +520,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2NjcwNzYsImV4cCI6MTc5MjY2NzA3NiwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMyIsInJvbCI6InNvY2lvIn0sImFwcCI6IlRlc3QgSldUIn0.OToC3r9vrreGGxDDWMyDG3Qu9BF8YZRdGKIrAUo7Kdg",
 								"type": "text"
 							}
 						],
@@ -541,7 +547,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2NjcwNzYsImV4cCI6MTc5MjY2NzA3NiwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMyIsInJvbCI6InNvY2lvIn0sImFwcCI6IlRlc3QgSldUIn0.OToC3r9vrreGGxDDWMyDG3Qu9BF8YZRdGKIrAUo7Kdg",
 								"type": "text"
 							}
 						],
@@ -554,7 +560,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:666/pedidos/54"
+						"url": "http://localhost:666/pedidos/108"
 					},
 					"response": []
 				},
@@ -565,20 +571,20 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE5NjM1MDUsImV4cCI6MTc5MTk2MzUwNSwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6ImNvY2luZXJvMSIsInJvbCI6ImNvY2luZXJvIn0sImFwcCI6IlRlc3QgSldUIn0.JcYXzUykNIp1KgkHmcn5p8u1JcyUlZfV8PS7r4OyGLs",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2Njc1MzAsImV4cCI6MTc5MjY2NzUzMCwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6ImNvY2luZXJvMyIsInJvbCI6ImNvY2luZXJvIn0sImFwcCI6IlRlc3QgSldUIn0.XUTclOsOb_oMe-OS4HJG8kliVfOhtidr-azC_Q_yqPg",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{    \r\n    \"sector\": \"cocinero\",\r\n    \"usuarioM\": \"cocinero1\",\r\n    \"claveM\": \"cuchillo\",\r\n\r\n    \"nombreProducto\": \"milanesa a caballo\",\r\n    \"estadoProducto\": \"listo\",\r\n    \"nombreTrabajador\": \"cocinero1\"\r\n}\r\n",
+							"raw": "{    \r\n    \"sector\": \"cocinero\",\r\n    \"usuarioM\": \"cocinero1\",\r\n    \"claveM\": \"cuchillo\",\r\n\r\n    \"nombreProducto\": \"milanesa a caballo\",\r\n    \"estadoProducto\": \"listo\",\r\n    \"nombreTrabajador\": \"cocinero2\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:666/pedidos/ModificarEstadoProductoEnPedido/cocinero/54"
+						"url": "http://localhost:666/pedidos/ModificarEstadoProductoEnPedido/cocinero/108"
 					},
 					"response": []
 				},
@@ -589,20 +595,20 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE5NjM1MDUsImV4cCI6MTc5MTk2MzUwNSwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6ImNvY2luZXJvMSIsInJvbCI6ImNvY2luZXJvIn0sImFwcCI6IlRlc3QgSldUIn0.JcYXzUykNIp1KgkHmcn5p8u1JcyUlZfV8PS7r4OyGLs",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2Njc1MzAsImV4cCI6MTc5MjY2NzUzMCwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6ImNvY2luZXJvMyIsInJvbCI6ImNvY2luZXJvIn0sImFwcCI6IlRlc3QgSldUIn0.XUTclOsOb_oMe-OS4HJG8kliVfOhtidr-azC_Q_yqPg",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{    \r\n    \"sector\": \"cocinero\",\r\n    \"usuarioM\": \"cocinero3\",\r\n    \"claveM\": \"cuchillo\",\r\n\r\n    \"nombreProducto\": \"hamburguesa de garbanzo\",\r\n    \"estadoProducto\": \"listo\",\r\n    \"nombreTrabajador\": \"cocinero3\"\r\n}\r\n",
+							"raw": "{    \r\n    \"sector\": \"cocinero\",\r\n    \"usuarioM\": \"cocinero2\",\r\n    \"claveM\": \"cuchillo\",\r\n\r\n    \"nombreProducto\": \"hamburguesa de garbanzo\",\r\n    \"estadoProducto\": \"listo\",\r\n    \"nombreTrabajador\": \"cocinero2\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:666/pedidos/ModificarEstadoProductoEnPedido/cocinero/54"
+						"url": "http://localhost:666/pedidos/ModificarEstadoProductoEnPedido/cocinero/60"
 					},
 					"response": []
 				},
@@ -613,20 +619,20 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE5NjM1MDUsImV4cCI6MTc5MTk2MzUwNSwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6ImNvY2luZXJvMSIsInJvbCI6ImNvY2luZXJvIn0sImFwcCI6IlRlc3QgSldUIn0.JcYXzUykNIp1KgkHmcn5p8u1JcyUlZfV8PS7r4OyGLs",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2Njc2NjEsImV4cCI6MTc5MjY2NzY2MSwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6ImJhcnRlbmRlcjEiLCJyb2wiOiJiYXJ0ZW5kZXIifSwiYXBwIjoiVGVzdCBKV1QifQ.P0zH40WKhq_YgpSH76zp-a0AnmbV6auDpX6g4O-CMH0",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{    \r\n    \"sector\": \"bartender\",\r\n    \"usuarioM\": \"bartender1\",\r\n    \"claveM\": \"coctel\",\r\n\r\n    \"nombreProducto\": \"daikiri\",\r\n    \"estadoProducto\": \"listo\",\r\n    \"nombreTrabajador\": \"bartender3\"\r\n}\r\n",
+							"raw": "{    \r\n    \"sector\": \"bartender\",\r\n    \"usuarioM\": \"bartender1\",\r\n    \"claveM\": \"coctel\",\r\n\r\n    \"nombreProducto\": \"daikiri\",\r\n    \"estadoProducto\": \"listo\",\r\n    \"nombreTrabajador\": \"bartender1\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:666/pedidos/ModificarEstadoProductoEnPedido/bartender/57"
+						"url": "http://localhost:666/pedidos/ModificarEstadoProductoEnPedido/bartender/60"
 					},
 					"response": []
 				},
@@ -637,7 +643,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE5NjM1MDUsImV4cCI6MTc5MTk2MzUwNSwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6ImNvY2luZXJvMSIsInJvbCI6ImNvY2luZXJvIn0sImFwcCI6IlRlc3QgSldUIn0.JcYXzUykNIp1KgkHmcn5p8u1JcyUlZfV8PS7r4OyGLs",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2Njc3MzIsImV4cCI6MTc5MjY2NzczMiwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6ImNlcnZlemVybzEiLCJyb2wiOiJjZXJ2ZXplcm8ifSwiYXBwIjoiVGVzdCBKV1QifQ.3Qd0rnl4ABbE24SQ24crZzJOEPGUV93ProjjVMWPELc",
 								"type": "text"
 							}
 						],
@@ -650,7 +656,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:666/pedidos/ModificarEstadoProductoEnPedido/cervezero/54"
+						"url": "http://localhost:666/pedidos/ModificarEstadoProductoEnPedido/cervezero/60"
 					},
 					"response": []
 				},
@@ -661,7 +667,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE5NjAxMzEsImV4cCI6MTc5MTk2MDEzMSwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6Im1vem8xIiwicm9sIjoibW96byJ9LCJhcHAiOiJUZXN0IEpXVCJ9.56KVBeYVFb8NlsiNTkG2SwJY3LzzMJRhYOEY_hlCE5A",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2Njc0MzgsImV4cCI6MTc5MjY2NzQzOCwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6Im1vem8xIiwicm9sIjoibW96byJ9LCJhcHAiOiJUZXN0IEpXVCJ9.1Vk8lC7ewHCvcyRSyOgL60CAlFDVO5MtCWgjIGiP4MQ",
 								"type": "text"
 							}
 						],
@@ -674,7 +680,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:666/pedidos/asignarProductoPendiente/54"
+						"url": "http://localhost:666/pedidos/asignarProductoPendiente/60"
 					},
 					"response": []
 				},
@@ -685,7 +691,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE5NjAxMzEsImV4cCI6MTc5MTk2MDEzMSwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6Im1vem8xIiwicm9sIjoibW96byJ9LCJhcHAiOiJUZXN0IEpXVCJ9.56KVBeYVFb8NlsiNTkG2SwJY3LzzMJRhYOEY_hlCE5A",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2Njc0MzgsImV4cCI6MTc5MjY2NzQzOCwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6Im1vem8xIiwicm9sIjoibW96byJ9LCJhcHAiOiJUZXN0IEpXVCJ9.1Vk8lC7ewHCvcyRSyOgL60CAlFDVO5MtCWgjIGiP4MQ",
 								"type": "text"
 							}
 						],
@@ -698,7 +704,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:666/pedidos/entregarPedido/57"
+						"url": "http://localhost:666/pedidos/entregarPedido/60"
 					},
 					"response": []
 				},
@@ -709,7 +715,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE5NjAxMzEsImV4cCI6MTc5MTk2MDEzMSwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6Im1vem8xIiwicm9sIjoibW96byJ9LCJhcHAiOiJUZXN0IEpXVCJ9.56KVBeYVFb8NlsiNTkG2SwJY3LzzMJRhYOEY_hlCE5A",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2Njc0MzgsImV4cCI6MTc5MjY2NzQzOCwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6Im1vem8xIiwicm9sIjoibW96byJ9LCJhcHAiOiJUZXN0IEpXVCJ9.1Vk8lC7ewHCvcyRSyOgL60CAlFDVO5MtCWgjIGiP4MQ",
 								"type": "text"
 							}
 						],
@@ -722,7 +728,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:666/pedidos/pagandoPedido/57"
+						"url": "http://localhost:666/pedidos/pagandoPedido/60"
 					},
 					"response": []
 				},
@@ -768,7 +774,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE5NjAxMzEsImV4cCI6MTc5MTk2MDEzMSwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6Im1vem8xIiwicm9sIjoibW96byJ9LCJhcHAiOiJUZXN0IEpXVCJ9.56KVBeYVFb8NlsiNTkG2SwJY3LzzMJRhYOEY_hlCE5A",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2Njc0MzgsImV4cCI6MTc5MjY2NzQzOCwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6Im1vem8xIiwicm9sIjoibW96byJ9LCJhcHAiOiJUZXN0IEpXVCJ9.1Vk8lC7ewHCvcyRSyOgL60CAlFDVO5MtCWgjIGiP4MQ",
 								"type": "text"
 							}
 						],
@@ -778,7 +784,7 @@
 								{
 									"key": "foto",
 									"type": "file",
-									"src": "/C:/Users/carne/Downloads/mesa.png"
+									"src": "/C:/xampp/htdocs/Comanda-CarnelosDuarteJoaquin/api/Fotos-PDF/pedido_t0cx9.png"
 								},
 								{
 									"key": "sector",
@@ -797,7 +803,7 @@
 								}
 							]
 						},
-						"url": "http://localhost:666/pedidos/foto/54"
+						"url": "http://localhost:666/pedidos/foto/60"
 					},
 					"response": []
 				}
@@ -816,7 +822,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2NjcwNzYsImV4cCI6MTc5MjY2NzA3NiwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMyIsInJvbCI6InNvY2lvIn0sImFwcCI6IlRlc3QgSldUIn0.OToC3r9vrreGGxDDWMyDG3Qu9BF8YZRdGKIrAUo7Kdg",
 								"type": "text"
 							}
 						],
@@ -843,7 +849,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2NjcwNzYsImV4cCI6MTc5MjY2NzA3NiwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMyIsInJvbCI6InNvY2lvIn0sImFwcCI6IlRlc3QgSldUIn0.OToC3r9vrreGGxDDWMyDG3Qu9BF8YZRdGKIrAUo7Kdg",
 								"type": "text"
 							}
 						],
@@ -867,7 +873,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2NjcwNzYsImV4cCI6MTc5MjY2NzA3NiwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMyIsInJvbCI6InNvY2lvIn0sImFwcCI6IlRlc3QgSldUIn0.OToC3r9vrreGGxDDWMyDG3Qu9BF8YZRdGKIrAUo7Kdg",
 								"type": "text"
 							}
 						],
@@ -908,7 +914,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzE3OTA4NTAsImV4cCI6MTc5MTc5MDg1MCwiYXVkIjoiNmIxOGE3ODBiZTM0MzYzNWVlM2Y0NjI5MGY0NmUyNmI4NjE0YjA4ZCIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMSJ9LCJhcHAiOiJUZXN0IEpXVCJ9.ff0d63shGL7HuCapFafx2gCVzWwJsUHezigSUNJzDt8",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2NjcwNzYsImV4cCI6MTc5MjY2NzA3NiwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMyIsInJvbCI6InNvY2lvIn0sImFwcCI6IlRlc3QgSldUIn0.OToC3r9vrreGGxDDWMyDG3Qu9BF8YZRdGKIrAUo7Kdg",
 								"type": "text"
 							}
 						],
@@ -934,7 +940,13 @@
 					"name": "modificarProducto",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2NjcwNzYsImV4cCI6MTc5MjY2NzA3NiwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMyIsInJvbCI6InNvY2lvIn0sImFwcCI6IlRlc3QgSldUIn0.OToC3r9vrreGGxDDWMyDG3Qu9BF8YZRdGKIrAUo7Kdg",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "     {\r\n            \"id\": 13,\r\n            \"nombre\": \"empanada\",\r\n            \"cantidad\": 1000,\r\n            \"precioUnidad\": \"30.00\",\r\n            \"tiempo\": 20,\r\n            \"tipo\": \"comida\",\r\n            \"seccion\": \"cocina\"\r\n        }",
@@ -967,19 +979,55 @@
 				},
 				{
 					"name": "productos",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2NjcwNzYsImV4cCI6MTc5MjY2NzA3NiwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMyIsInJvbCI6InNvY2lvIn0sImFwcCI6IlRlc3QgSldUIn0.OToC3r9vrreGGxDDWMyDG3Qu9BF8YZRdGKIrAUo7Kdg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "  {     \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": "http://localhost:666/productos"
 					},
 					"response": []
 				},
 				{
 					"name": "Traer1Producto",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
-						"header": [],
-						"url": "http://localhost:666/productos/empanada"
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MzI2NjcwNzYsImV4cCI6MTc5MjY2NzA3NiwiYXVkIjoiMTJkNjRjZmIyYjgwYWZjNjY1YzIyMDU4NTExNzIzYTVjNGE4YTQ1MiIsImRhdGEiOnsidXN1YXJpbyI6InNvY2lvMyIsInJvbCI6InNvY2lvIn0sImFwcCI6IlRlc3QgSldUIn0.OToC3r9vrreGGxDDWMyDG3Qu9BF8YZRdGKIrAUo7Kdg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "  {   \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:666/productos/daikiri"
 					},
 					"response": []
 				}
@@ -1005,7 +1053,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "    {\"codigoPedido\": \"t0cx9\",\r\n    \"codigoMesa\": \"7fgpm\"\r\n    }",
+							"raw": "    {\"codigoPedido\": \"c5bd6\",\r\n\r\n    \"codigoMesa\": \"93vds\"\r\n    }\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1030,7 +1078,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombreCliente\" :\"test\",\r\n    \"codigoPedido\": \"g7xau\",\r\n    \"restaurante\":1,\r\n    \"mozo\": 1,\r\n    \"cocinero\": 1,\r\n    \"texto\" : \"malisimo\"\r\n}\r\n",
+							"raw": "{\r\n    \"nombreCliente\" :\"Correcion\",\r\n    \"codigoPedido\": \".\",\r\n    \"restaurante\":7,\r\n    \"mozo\": 7,\r\n    \"cocinero\": 7,\r\n    \"texto\" : \"bueno\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1114,7 +1162,7 @@
 								}
 							]
 						},
-						"url": "http://localhost:666/pdf/listaProductos"
+						"url": "http://localhost:666/pdf/listaUsuarios"
 					},
 					"response": []
 				}
@@ -1133,11 +1181,20 @@
 					"response": []
 				},
 				{
-					"name": "pedidos30dias Copy",
+					"name": "usuariosAlta30dias",
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://localhost:666/estadisticas30/pedidos"
+						"url": "http://localhost:666/estadisticas30/altaUsuarios"
+					},
+					"response": []
+				},
+				{
+					"name": "encuestasUltimos30",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:666/estadisticas30/altaUsuarios"
 					},
 					"response": []
 				}

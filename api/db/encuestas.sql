@@ -12,6 +12,8 @@ CREATE TABLE encuestas (
     cocinero INT NOT NULL,
     PuntajeFinal INT NOT NULL,
     texto  VARCHAR(255)  NOT NULL,
+    fecha_alta  VARCHAR(255)  NOT NULL,
+
 
 );
 
