@@ -3,6 +3,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Psr7\Response;
 
+require_once __DIR__ . '/../controllers/TokenController.php';
 class LoggerMiddleware
 {
     private $rolEsperado;
@@ -26,15 +27,13 @@ class LoggerMiddleware
             return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
         }
 
-        $parsedBody = $request->getParsedBody();
-        $sector = $parsedBody['sector'] ?? null;
-        $usuarioM = $parsedBody['usuarioM'] ?? null;
-        $claveM = $parsedBody['claveM'] ?? null;
+
+        $data = AutentificadorJWT::ObtenerData($token);
+        $usuarioM = $data->usuario; 
+        $rol = $data->rol;      
 
         if (
-            $sector === $this->rolEsperado &&
-            Usuario::verificarRol($usuarioM, $this->rolEsperado) &&
-            Usuario::verificarClave($usuarioM, $claveM)
+            Usuario::verificarRol($usuarioM, $rol) 
         ) {
             return $handler->handle($request);
         }

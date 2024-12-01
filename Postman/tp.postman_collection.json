@@ -323,7 +323,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"usuario\": \"cocinero6\",\r\n    \"clave\": \"cuchillo\",\r\n    \"rol\": \"cocinero\",\r\n\r\n    \r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n}\r\n\r\n\r\n",
+							"raw": "{\r\n    \"usuario\": \"barteeeendeer6\",\r\n    \"clave\": \"trago\",\r\n    \"rol\": \"bartender\"\r\n\r\n\r\n}\r\n\r\n\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -382,7 +382,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{       \r\n    \"sector\": \"mozo\",\r\n    \"usuarioM\": \"mozo1\",\r\n    \"claveM\": \"bandeja\",\r\n    \r\n    \"nombreCliente\": \"Correcion\",\r\n    \"listaProductos\": [\r\n\r\n        {\"nombre\": \"milanesa a caballo\", \"cantidad\": 2},\r\n        {\"nombre\": \"hamburguesa de garbanzo\", \"cantidad\": 1},\r\n        {\"nombre\": \"corona\", \"cantidad\": 1},\r\n        {\"nombre\": \"daikiri\", \"cantidad\": 6}\r\n\r\n\r\n    ]\r\n}\r\n",
+							"raw": "{       \r\n\r\n    \r\n    \"nombreCliente\": \"quesier\",\r\n    \"listaProductos\": [\r\n\r\n\r\n        {\"nombre\": \"corona\", \"cantidad\": 1}\r\n\r\n\r\n    ]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -406,7 +406,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{       \r\n    \"nombre\": \"daikiri\",\r\n    \"cantidad\": 1000,\r\n    \"precioUnidad\": 30,\r\n    \"tipo\": \"bebida\",\r\n    \"seccion\" : \"tragos\",\r\n    \"tiempo\": 5,\r\n\r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n\r\n\r\n}\r\n",
+							"raw": "{       \r\n    \"nombre\": \"daikiri\",\r\n    \"cantidad\": 1000,\r\n    \"precioUnidad\": 20,\r\n    \"tipo\": \"bebida\",\r\n    \"seccion\" : \"chopera\",\r\n    \"tiempo\": 2,\r\n\r\n\r\n\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -430,7 +430,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n}\r\n",
+							"raw": "{\r\n\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -526,7 +526,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{   \r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n}\r\n\r\n",
+							"raw": "{   \r\n\r\n\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -553,14 +553,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{   \r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n}\r\n\r\n",
+							"raw": "{   \r\n\r\n}\r\n\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:666/pedidos/108"
+						"url": "http://localhost:666/pedidos/202"
 					},
 					"response": []
 				},
@@ -577,7 +577,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{    \r\n    \"sector\": \"cocinero\",\r\n    \"usuarioM\": \"cocinero1\",\r\n    \"claveM\": \"cuchillo\",\r\n\r\n    \"nombreProducto\": \"milanesa a caballo\",\r\n    \"estadoProducto\": \"listo\",\r\n    \"nombreTrabajador\": \"cocinero2\"\r\n}\r\n",
+							"raw": "{    \r\n\r\n\r\n    \"nombreProducto\": \"milanesa a caballo\",\r\n    \"estadoProducto\": \"listo\",\r\n    \"nombreTrabajador\": \"cocinero2\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -601,7 +601,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{    \r\n    \"sector\": \"cocinero\",\r\n    \"usuarioM\": \"cocinero2\",\r\n    \"claveM\": \"cuchillo\",\r\n\r\n    \"nombreProducto\": \"hamburguesa de garbanzo\",\r\n    \"estadoProducto\": \"listo\",\r\n    \"nombreTrabajador\": \"cocinero2\"\r\n}\r\n",
+							"raw": "{    \r\n\r\n    \"nombreProducto\": \"hamburguesa de garbanzo\",\r\n    \"estadoProducto\": \"listo\",\r\n    \"nombreTrabajador\": \"cocinero2\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -625,7 +625,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{    \r\n    \"sector\": \"bartender\",\r\n    \"usuarioM\": \"bartender1\",\r\n    \"claveM\": \"coctel\",\r\n\r\n    \"nombreProducto\": \"daikiri\",\r\n    \"estadoProducto\": \"listo\",\r\n    \"nombreTrabajador\": \"bartender1\"\r\n}\r\n",
+							"raw": "{    \r\n\r\n    \"codigoPedido\": \"c1gev\",\r\n\r\n    \"nombreProducto\": \"daikiri\",\r\n    \"estadoProducto\": \"listo\",\r\n    \"nombreTrabajador\": \"bartender3\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -649,7 +649,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{    \r\n    \"sector\": \"cervezero\",\r\n    \"usuarioM\": \"cervezero1\",\r\n    \"claveM\": \"birra\",\r\n\r\n    \"nombreProducto\": \"corona\",\r\n    \"estadoProducto\": \"listo\",\r\n    \"nombreTrabajador\": \"cervezero1\"\r\n}\r\n",
+							"raw": "{    \r\n\r\n    \"codigoPedido\": \"wkevu\",\r\n    \"nombreProducto\": \"corona\",\r\n    \"estadoProducto\": \"listo\",\r\n    \"nombreTrabajador\": \"cervezero3\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -673,14 +673,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{       \r\n    \"sector\": \"mozo\",\r\n    \"usuarioM\": \"mozo1\",\r\n    \"claveM\": \"bandeja\"\r\n}",
+							"raw": "{       \r\n\r\n    \"codigoPedido\":\"2315v\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:666/pedidos/asignarProductoPendiente/60"
+						"url": "http://localhost:666/pedidos/asignarProductoPendiente/9g1it"
 					},
 					"response": []
 				},
@@ -697,7 +697,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{       \r\n    \"sector\": \"mozo\",\r\n    \"usuarioM\": \"mozo1\",\r\n    \"claveM\": \"bandeja\"\r\n    }",
+							"raw": "{       \r\n\r\n    \"codigoPedido\": \"c1gev\"\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -721,7 +721,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{       \r\n    \"sector\": \"mozo\",\r\n    \"usuarioM\": \"mozo1\",\r\n    \"claveM\": \"bandeja\"\r\n    }",
+							"raw": "{       \r\n\r\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -784,26 +784,11 @@
 								{
 									"key": "foto",
 									"type": "file",
-									"src": "/C:/xampp/htdocs/Comanda-CarnelosDuarteJoaquin/api/Fotos-PDF/pedido_t0cx9.png"
-								},
-								{
-									"key": "sector",
-									"value": "mozo",
-									"type": "text"
-								},
-								{
-									"key": "usuarioM",
-									"value": "mozo1",
-									"type": "text"
-								},
-								{
-									"key": "claveM",
-									"value": "bandeja",
-									"type": "text"
+									"src": "/C:/Users/carne/Downloads/disco.jpg"
 								}
 							]
 						},
-						"url": "http://localhost:666/pedidos/foto/60"
+						"url": "http://localhost:666/pedidos/foto/111"
 					},
 					"response": []
 				}
@@ -828,7 +813,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{   \r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n}",
+							"raw": "{   \r\n\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -855,7 +840,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{   \r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n}",
+							"raw": "{   \r\n\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -879,7 +864,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{       \r\n    \"usuario\": \"cocinero1\",\r\n    \"clave\": \"cuchillo\",\r\n    \"rol\": \"cocinero\",\r\n    \r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n\r\n}\r\n\r\n ",
+							"raw": "{       \r\n    \"usuario\": \"cocinero1\",\r\n    \"clave\": \"cuchillo\",\r\n    \"rol\": \"cocinero\"\r\n    \r\n\r\n\r\n}\r\n\r\n ",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -920,7 +905,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{       \r\n    \"usuario\": \"cocineroTest\",\r\n    \"clave\": \"cuchillo\",\r\n    \"rol\": \"cocinero\",\r\n\r\n    \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"\r\n}\r\n\r\n ",
+							"raw": "{       \r\n    \"usuario\": \"cocineroTest\",\r\n    \"clave\": \"cuchillo\",\r\n    \"rol\": \"cocinero\",\r\n\r\n\r\n}\r\n\r\n ",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -993,7 +978,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "  {     \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1020,7 +1005,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "  {   \"sector\": \"socio\",\r\n    \"usuarioM\": \"socio2\",\r\n    \"claveM\": \"admin\"}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1173,9 +1158,21 @@
 			"item": [
 				{
 					"name": "pedidos30dias",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": "http://localhost:666/estadisticas30/pedidos"
 					},
 					"response": []
