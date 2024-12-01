@@ -4,16 +4,19 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 
-CREATE TABLE pedidos (
+CREATE TABLE Tarea (
     id INT AUTO_INCREMENT PRIMARY KEY,
     codigoPedido  VARCHAR(255)  NOT NULL,
+    nombreProducto VARCHAR(255)  NOT NULL,
+    trabajadorAsignado VARCHAR(255)  NOT NULL,
+    cantidad VARCHAR(255)  NOT NULL,
     estado  VARCHAR(255)  NOT NULL,
-    nombreCliente  VARCHAR(255)  NOT NULL,
-    codigoMesa  VARCHAR(255)   NULL,
-    tiempoEstimado  VARCHAR(255)   NULL,
-    precio  VARCHAR(255)   NULL,
+    seccion  VARCHAR(255)  NOT NULL,
+    tiempoEstimado  VARCHAR(255)  NOT NULL,
+    fecha_alta  VARCHAR(255)  NOT NULL
+
 );
 
-ALTER TABLE `pedidos`
+ALTER TABLE `Tarea`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;

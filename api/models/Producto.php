@@ -89,6 +89,12 @@ class Producto
         return $consulta->fetch(PDO::FETCH_ASSOC); 
     }
 
+    public static function obtenerPrecioProducto($nombre)
+    {
+        $producto = self::obtenerProducto($nombre);
+        return $producto ? $producto['precioUnidad'] : null;
+    }
+
     public static function modificarProducto($producto)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -113,6 +119,16 @@ class Producto
         $consulta->bindValue(':id', $id, PDO::PARAM_INT);
 
         $consulta->execute();
+    }   
+
+    public static function ObtenerSeccionProducto($nombre)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("SELECT seccion FROM productos WHERE nombre = :nombre");
+        $consulta->bindValue(':nombre', $nombre, PDO::PARAM_STR);
+        $consulta->execute();
+
+        return $consulta->fetch(PDO::FETCH_ASSOC);
     }
 }
 ?>

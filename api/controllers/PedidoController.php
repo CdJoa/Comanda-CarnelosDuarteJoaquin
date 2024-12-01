@@ -1,48 +1,76 @@
 <?php
 require_once __DIR__ . '/../models/pedido.php';
 require_once __DIR__ . '/../interfaces/IApiUsable.php';
+require_once __DIR__ . '/../models/Tarea.php';
 
 class PedidoController extends Pedido implements IApiUsable
 {
-
     public function CargarUno($request, $response, $args)
-    {
-        $parametros = $request->getParsedBody();
-    
-        $nombreCliente = $parametros['nombreCliente'];
-        $lista = $parametros['listaProductos'];
-    
-        if (empty($lista)) {
-            $payload = json_encode(array("mensaje" => "No se proporcionaron productos"));
-            $response->getBody()->write($payload);
-            return $response->withHeader('Content-Type', 'application/json');
-        }
-    
-        try {
-            $listaConTrabajadores = Pedido::asignarTrabajador($lista);
-        } catch (Exception $e) {
-            $payload = json_encode(array("error" => $e->getMessage()));
-            $response->getBody()->write($payload);
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
-        }
-    
-        $pedido = new Pedido();
-        $pedido->nombreCliente = $nombreCliente;
-        $pedido->listaProductos = $listaConTrabajadores;
-        
-    
-        try {
-            $pedido->crearPedido($listaConTrabajadores);
-            $payload = json_encode(array("mensaje" => "Se creó el pedido con éxito", "pedido" => $pedido));
-            $response->getBody()->write($payload);
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
-        } catch (Exception $e) {
-            $payload = json_encode(array("error" => $e->getMessage()));
-            $response->getBody()->write($payload);
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
-        }
+{
+    $parametros = $request->getParsedBody();
+
+    $nombreCliente = $parametros['nombreCliente'];
+    $lista = $parametros['listaProductos'];
+
+    if (empty($lista)) {
+        $payload = json_encode(array("mensaje" => "No se proporcionaron productos"));
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
     }
-    
+
+    $pedido = new Pedido();
+    $pedido->nombreCliente = $nombreCliente;
+
+    $precioTotal = 0;
+    $tiempoTotal = 0;
+
+    try {
+        $pedido->crearPedido($lista);
+        $tarea = new Tarea(); 
+        foreach ($lista as $producto) {
+            if (is_array($producto)) {
+                $tareasAsignadas = $tarea->asignarTrabajador($producto); 
+                foreach ($tareasAsignadas as $tareaAsignada) {
+                    $tarea = new Tarea();
+                    $tarea->setNombreProducto($tareaAsignada['nombre']);
+                    $tarea->setCodigoPedido($pedido->codigoPedido);
+                    $tarea->trabajadorAsignado = is_array($tareaAsignada['empleadoAsignado']) ? json_encode($tareaAsignada['empleadoAsignado']) : $tareaAsignada['empleadoAsignado'] ?? 'pendiente';
+
+                    $tarea->cantidad = $tareaAsignada['cantidad'] ?? null;
+                    $tarea->estado = $tareaAsignada['estado'] ?? 'pendiente';
+                    $tarea->seccion = Producto::ObtenerSeccionProducto($tareaAsignada['nombre']);
+                    $tarea->tiempoEstimado = $tareaAsignada['tiempoEstimado'] ?? 0;
+
+                    if ($tarea->trabajadorAsignado === null) {
+                        throw new Exception("El trabajador asignado no puede ser nulo");
+                    }
+                    $tarea->PrepararTarea($pedido->codigoPedido);
+                    $tarea->crearTarea();
+
+                    $precioProducto = Producto::ObtenerPrecioProducto($tareaAsignada['nombre']);
+                    $precioTotal += $precioProducto * $tarea->cantidad;
+                    $tiempoTotal += $tarea->tiempoEstimado;
+
+                }
+                
+            } else {
+                throw new Exception("Producto inválido en la lista: " . json_encode($producto));
+            }
+        }
+        Pedido::actualizarPrecioYTiempo($pedido->codigoPedido, $precioTotal, $tiempoTotal);
+
+
+        $payload = json_encode(array("mensaje" => "Se creó el pedido con éxito", "pedido" => $pedido));
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
+    } catch (Exception $e) {
+        $payload = json_encode(array("error" => $e->getMessage()));
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+    }
+}
+
+
     public function TraerUno($request, $response, $args)
     {
         $id = $args['id'] ?? null;
@@ -86,73 +114,54 @@ class PedidoController extends Pedido implements IApiUsable
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-
     public function ModificarEstadoProductoEnPedido($request, $response, $args)
     {
         $parametros = $request->getParsedBody();
-        $idPedido = $args['id'] ?? null;
-        $nombreProducto = $parametros['nombreProducto'] ?? null;
-        $estadoProducto = $parametros['estadoProducto'] ?? null;
+        $codigoPedido = $args['codigoPedido'] ?? null;
         $nombreTrabajador = $parametros['nombreTrabajador'] ?? null;
-    
-        if (!$idPedido || !$nombreProducto || !$estadoProducto || !$nombreTrabajador) {
+
+        if (!$codigoPedido  || !$nombreTrabajador) {
             $payload = json_encode(["mensaje" => "Faltan parámetros para modificar el producto"]);
             $response->getBody()->write($payload);
             return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
         }
-    
+
         try {
-            $pedido = Pedido::obtenerPedido($idPedido);
+            $pedido = Pedido::obtenerPedidoCodigo($codigoPedido);
             if (!$pedido) {
                 throw new Exception("Pedido no encontrado");
             }
-    
-            $productoEncontrado = false;
-    
-            foreach ($pedido['listaProductos'] as &$producto) {
-                if ($producto['nombre'] === $nombreProducto) {
-                    foreach ($producto['asignaciones'] as &$asignacion) {
-                        if ($asignacion['empleadoAsignado'] === $nombreTrabajador) {
-                            $asignacion['estado'] = $estadoProducto;
-                            $productoEncontrado = true;
-                            break 2; 
-                        }
-                    }
-    
-                    if (!$productoEncontrado) {
-                        $payload = json_encode(["mensaje" => "El trabajador no está asignado a este producto"]);
-                        $response->getBody()->write($payload);
-                        return $response->withHeader('Content-Type', 'application/json')->withStatus(403);  // Forbidden
-                    }
-                }
+
+            $tareaEncontrada = false;
+
+            $tarea = Tarea::obtenerTareas($pedido->codigoPedido);
+
+            if (!$tareaEncontrada) {
+                $payload = json_encode(["mensaje" => "El trabajador no está asignado a este producto o producto no encontrado"]);
+                $response->getBody()->write($payload);
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(403);  // Forbidden
             }
-    
-            if (!$productoEncontrado) {
-                throw new Exception("Producto pendiente no encontrado en el pedido");
-            }
-    
-            $productosJson = json_encode($pedido['listaProductos']);
-            $objAccesoDatos = AccesoDatos::obtenerInstancia();
-            $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET listaProductos = :listaProductos WHERE id = :id");
-            $consulta->bindValue(':listaProductos', $productosJson, PDO::PARAM_STR);
-            $consulta->bindValue(':id', $idPedido, PDO::PARAM_INT);
-            $consulta->execute();
-    
-            $payload = json_encode(["mensaje" => "Producto actualizado con éxito", "producto" => $producto]);
+
+            Tarea::FinalizarTarea($tarea['codigoPedido']);
+            Tarea::liberarTrabajadores($tarea['codigoPedido']);
+            $payload = json_encode(["mensaje" => "Producto actualizado con éxito", "tarea" => $tarea]);
             $response->getBody()->write($payload);
             return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
-    
+
         } catch (Exception $e) {
             $payload = json_encode(["error" => $e->getMessage()]);
             $response->getBody()->write($payload);
             return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
         }
     }
+
     
 
     public function entregarPedido($request, $response, $args)
     {
         $idPedido = $args['id'] ?? null;
+        $codigoPedido = $args['codigoPedido'] ?? null;
+
       
         try {
             $pedido = Pedido::obtenerPedido($idPedido);
@@ -163,25 +172,19 @@ class PedidoController extends Pedido implements IApiUsable
                 return $response->withHeader('Content-Type', 'application/json')->withStatus(404);
             }
 
-            foreach ($pedido['listaProductos'] as $producto) {
-                foreach ($producto['asignaciones'] as $asignacion) {
-                    if ($asignacion['estado'] !== 'listo') {
-                        $payload = json_encode(["mensaje" => "No todos los productos están listos para ser entregados"]);
-                        $response->getBody()->write($payload);
-                        return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
-                    }
+            $tareas = Tarea::obtenerTareas($pedido->codigoPedido);
+            foreach ($tareas as $tarea) {
+                if ($tarea['estado'] !== 'listo') {
+                    $payload = json_encode(["mensaje" => "No se puede entregar el pedido. Hay tareas no finalizadas."]);
+                    $response->getBody()->write($payload);
+                    return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
                 }
             }
             
 
             $codigoMesa = $pedido['codigoMesa'];
             Mesa::cambiarEstadoMesa($codigoMesa, 'cliente comiendo');	
-            foreach ($pedido['listaProductos'] as $producto) {
-                $empleadoAsignado = $producto['empleadoAsignado'];  
-                Usuario::cambiarAEstadoLibre($empleadoAsignado);
-
-            }
-    
+            
             Pedido::marcarComoEntregado($idPedido);
     
             $payload = json_encode(["mensaje" => "Pedido entregado con éxito y empleados asignados actualizados"]);
@@ -258,32 +261,21 @@ class PedidoController extends Pedido implements IApiUsable
             $pedido = Pedido::obtenerPedido($idPedido);
     
             $productoPendienteEncontrado = false;
-            foreach ($pedido['listaProductos'] as &$producto) {
-                if ($producto['estado'] === 'pendiente') {
-                    $productoPendienteEncontrado = true;
-                    $producto['empleadoAsignado'] = Pedido::asignarTrabajador([$producto])[0]['empleadoAsignado'];
-                    Pedido::CalcularTiempoEstimado([$producto]);
-                    $producto['estado'] = 'preparandose'; 
-                }
-            }
-    
-            if (!$productoPendienteEncontrado) {
-                $payload = json_encode(["mensaje" => "No hay productos pendientes en el pedido"]);
+            $tareas = Tarea::obtenerTareas($pedido->codigoPedido);
+
+            $productoPendienteEncontrado = array_filter($tareas, function($tarea) {
+                return $tarea['estado'] === 'pendiente';
+            });
+
+            if (empty($productoPendienteEncontrado)) {
+                $payload = json_encode(["mensaje" => "No hay tareas pendientes en el pedido"]);
                 $response->getBody()->write($payload);
-                return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
             }
-    
-            $productosJson = json_encode($pedido['listaProductos']);
-            $objAccesoDatos = AccesoDatos::obtenerInstancia();
-            $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET listaProductos = :listaProductos WHERE id = :id");
-            $consulta->bindValue(':listaProductos', $productosJson, PDO::PARAM_STR);
-            $consulta->bindValue(':id', $idPedido, PDO::PARAM_INT);
-            $consulta->execute();
-    
-            $payload = json_encode(["mensaje" => "Pedido asignado y actualizado con éxito", "pedido" => $pedido]);
-            $response->getBody()->write($payload);
-            return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
-    
+            
+            else{
+                Tarea::asignarTrabajador($pedido->codigoPedido);
+            }
         } catch (Exception $e) {
             $payload = json_encode(["error" => $e->getMessage()]);
             $response->getBody()->write($payload);
