@@ -48,17 +48,16 @@ class Pedido{
     
         return $this->id;
     }
-    public static function actualizarPrecioYTiempo($codigoPedido, $precio, $tiempoEstimado)
+    
+    public function actualizarPedido()
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
         $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET precio = :precio, tiempoEstimado = :tiempoEstimado WHERE codigoPedido = :codigoPedido");
-        $consulta->bindValue(':precio', $precio, PDO::PARAM_INT);
-        $consulta->bindValue(':tiempoEstimado', $tiempoEstimado, PDO::PARAM_INT);
-        $consulta->bindValue(':codigoPedido', $codigoPedido, PDO::PARAM_STR);
+        $consulta->bindValue(':precio', $this->precio, PDO::PARAM_STR);
+        $consulta->bindValue(':tiempoEstimado', $this->tiempoEstimado, PDO::PARAM_INT);
+        $consulta->bindValue(':codigoPedido', $this->codigoPedido, PDO::PARAM_STR);
         $consulta->execute();
-
     }
-
 
 
 
@@ -154,22 +153,46 @@ class Pedido{
         $consulta->execute();
     }
 
-
-
-
-
-    public static function marcarComoEntregado($id)
+    public static function marcarComoPreparandose($codigoPedido)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET estado = 'entregado' WHERE id = :id");
-        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET estado = 'preparandose' WHERE codigoPedido = :codigoPedido");
+        $consulta->bindValue(':codigoPedido', $codigoPedido, PDO::PARAM_INT);
         $consulta->execute();
     }
-    public static function marcarComoPagado($id)
+    public static function marcarComoListo($codigoPedido)
+    {
+        try {
+            $objAccesoDatos = AccesoDatos::obtenerInstancia();
+            $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET estado = 'listo' WHERE codigoPedido = :codigoPedido");
+            $consulta->bindValue(':codigoPedido', $codigoPedido, PDO::PARAM_INT);
+            $resultado = $consulta->execute();
+            
+            if ($resultado) {
+                return true;
+            } else {
+                throw new Exception("Error al actualizar el estado del pedido.");
+            }
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+    }
+    
+
+
+    public static function marcarComoEntregado($codigoPedido)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET estado = 'pagado' WHERE id = :id");
-        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET estado = 'entregado' WHERE codigoPedido = :codigoPedido");
+        $consulta->bindValue(':codigoPedido', $codigoPedido, PDO::PARAM_INT);
+        $consulta->execute();
+    }
+    public static function marcarComoPagado($codigoPedido)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE pedidos SET estado = 'pagado' WHERE codigoPedido = :codigoPedido");
+        $consulta->bindValue(':codigoPedido', $codigoPedido, PDO::PARAM_INT);
         $consulta->execute();
     }
 

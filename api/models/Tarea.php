@@ -25,7 +25,7 @@ class Tarea {
         $consulta->bindValue(':nombreProducto', $this->nombreProducto, PDO::PARAM_STR);
         $consulta->bindValue(':trabajadorAsignado', $this->trabajadorAsignado, PDO::PARAM_INT);
         $consulta->bindValue(':cantidad', $this->cantidad, PDO::PARAM_INT);
-        $this->estado = 'pendiente';
+        $this->estado = ($this->trabajadorAsignado !== 'pendiente') ? 'preparandose' : 'pendiente';
         $consulta->bindValue(':estado', $this->estado, PDO::PARAM_STR);
         $this->seccion = Producto::obtenerProducto($this->nombreProducto)['seccion'];
         $consulta->bindValue(':seccion', $this->seccion, PDO::PARAM_STR);
@@ -67,7 +67,7 @@ class Tarea {
                     $productosAsignados[] = [
                         'nombre' => $producto['nombre'],
                         'cantidad' => 1,
-                        'empleadoAsignado' => $empleadoAsignado ? $empleadoAsignado['usuario'] : null,
+                        'empleadoAsignado' => $empleadoAsignado ? $empleadoAsignado['usuario'] : 'pendiente',
                         'estado' => $empleadoAsignado ? 'preparandose' : 'pendiente',
                         'tiempoEstimado' => $empleadoAsignado ? $tiempoEstimado * rand(10, 13) / 10 : 'pendiente'
                     ];
@@ -79,14 +79,13 @@ class Tarea {
 
             case 'chopera':
             case 'tragos':
-                for ($i = 0; $i < $cantidad; $i++) {
-                    if ($i % 5 == 0) {
-                        $empleadoAsignado = Usuario::obtener1UsuarioLibresPorRol($seccionProducto == 'chopera' ? 'cervezero' : 'bartender');
-                    }
+                for ($i = 0; $i < $cantidad; $i += 5) { 
+                    $empleadoAsignado = Usuario::obtener1UsuarioLibresPorRol($seccionProducto == 'chopera' ? 'cervezero' : 'bartender');
+                    $lote = min(5, $cantidad - $i);
                     $productosAsignados[] = [
                         'nombre' => $producto['nombre'],
-                        'cantidad' => min(5, $cantidad - $i),
-                        'empleadoAsignado' => $empleadoAsignado ? $empleadoAsignado['usuario'] : null,
+                        'cantidad' => $lote,
+                        'empleadoAsignado' => $empleadoAsignado ? $empleadoAsignado['usuario'] : 'pendiente',
                         'estado' => $empleadoAsignado ? 'preparandose' : 'pendiente',
                         'tiempoEstimado' => $empleadoAsignado ? $tiempoEstimado * rand(10, 13) / 10 : 'pendiente'
                     ];
@@ -99,11 +98,25 @@ class Tarea {
             default:
                 throw new Exception("Sección de producto no válida.");
         }
+
         return $productosAsignados;
     } else {
         throw new Exception("Producto no encontrado: " . $producto['nombre']);
     }
 }
+
+    public function actualizarTrabajador($id, $trabajadorAsignado)
+    {
+        $objAccesoDatos = AccesoDatos::obtenerInstancia();
+        $consulta = $objAccesoDatos->prepararConsulta(
+            "UPDATE Tarea SET trabajadorAsignado = :trabajadorAsignado WHERE id = :id");
+
+        $consulta->bindValue(':trabajadorAsignado', $trabajadorAsignado, PDO::PARAM_INT);
+        $consulta->bindValue(':id', $id, PDO::PARAM_INT);
+        $consulta->execute();
+    }
+
+
     public static function PrepararTarea($codigoPedido)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
@@ -167,6 +180,58 @@ class Tarea {
         }
         throw new Exception("Producto no encontrado: " . $nombreProducto);
     }
+
+    public static function calcularTiempoFinal($codigoPedido)
+    {
+        $tareas = Tarea::obtenerTareas($codigoPedido);
+        $tiempoEstimadoFinal = 0;
+        foreach ($tareas as $tarea) {
+            if ($tarea->tiempoEstimado > $tiempoEstimadoFinal) {
+                $tiempoEstimadoFinal = $tarea->tiempoEstimado;
+            }
+        }
+        if ($tiempoEstimadoFinal == 0) {
+            foreach ($tareas as $tarea) {
+            $producto = Producto::obtenerProducto($tarea->nombreProducto);
+            if ($producto && $producto['tiempo'] > $tiempoEstimadoFinal) {
+                $tiempoEstimadoFinal = $producto['tiempo'];
+            }
+            $tiempoEstimadoFinal *= 1.7;
+            return $tiempoEstimadoFinal;
+            }
+        }
+        return $tiempoEstimadoFinal;
+    }
+
+    public static function obtenerTodosLosEstados($codigoPedido){
+        $tareas = Tarea::obtenerTareas($codigoPedido);
+        $estados = [];
+        foreach ($tareas as $tarea) {
+            $estados[] = $tarea->estado;
+        }
+        return $estados;
+    }
+    public static function todosPreparandose($codigoPedido) {
+        $estados = Tarea::obtenerTodosLosEstados($codigoPedido);
+        foreach ($estados as $estado) {
+            if ($estado !== 'preparandose') {
+                return false;
+            }
+        }
+        return true;
+    }
+    public static function todosListos($codigoPedido) {
+        $estados = Tarea::obtenerTodosLosEstados($codigoPedido);
+        foreach ($estados as $estado) {
+            if ($estado !== 'listo') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
 
 }
 ?>
