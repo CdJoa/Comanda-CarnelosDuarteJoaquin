@@ -100,9 +100,9 @@ $app->group('/mesas', function (RouteCollectorProxy $group) {
       $group->get('/{id}', \PedidoController::class . ':TraerUno')->add(new \LoggerMiddleware('socio'));
 
 
-      $group->put('/ModificarEstadoProductoEnPedido/cocinero/{id}', \PedidoController::class . ':ModificarEstadoProductoEnPedido')->add(new \LoggerMiddleware('cocinero'));
-      $group->put('/ModificarEstadoProductoEnPedido/bartender/{id}', \PedidoController::class . ':ModificarEstadoProductoEnPedido')->add(new \LoggerMiddleware('bartender'));
-      $group->put('/ModificarEstadoProductoEnPedido/cervezero/{id}', \PedidoController::class . ':ModificarEstadoProductoEnPedido')->add(new \LoggerMiddleware('cervezero'));
+      $group->put('/ModificarEstadoProductoEnPedido/cocinero', \PedidoController::class . ':ModificarEstadoProductoEnPedido')->add(new \LoggerMiddleware('cocinero'));
+      $group->put('/ModificarEstadoProductoEnPedido/bartender', \PedidoController::class . ':ModificarEstadoProductoEnPedido')->add(new \LoggerMiddleware('bartender'));
+      $group->put('/ModificarEstadoProductoEnPedido/cervezero', \PedidoController::class . ':ModificarEstadoProductoEnPedido')->add(new \LoggerMiddleware('cervezero'));
 
 
       $group->put('/asignarProductoPendiente/{id}', \PedidoController::class . ':asignarProductoPendiente')->add(new \LoggerMiddleware('mozo'));

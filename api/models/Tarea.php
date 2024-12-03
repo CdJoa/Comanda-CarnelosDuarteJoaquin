@@ -137,15 +137,17 @@ class Tarea {
         }
     }
 
-    public static function FinalizarTarea($codigoPedido)
+    public static function FinalizarTarea($codigoPedido,$trabajadorAsignado)
     {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();
-        $consulta = $objAccesoDatos->prepararConsulta("UPDATE Tarea SET estado = 'listo' WHERE codigoPedido = :codigoPedido");
+        $consulta = $objAccesoDatos->prepararConsulta("UPDATE Tarea SET estado = 'listo' WHERE codigoPedido = :codigoPedido AND trabajadorAsignado = :trabajadorAsignado");
         
         $consulta->bindValue(':codigoPedido', $codigoPedido, PDO::PARAM_INT);
+        $consulta->bindValue(':trabajadorAsignado', $trabajadorAsignado, PDO::PARAM_INT);
 
         $consulta->execute();
     }
+
 
     public static function obtenerTareas($codigoPedido) {
         $objAccesoDatos = AccesoDatos::obtenerInstancia();

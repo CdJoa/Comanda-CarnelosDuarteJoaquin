@@ -139,8 +139,8 @@ class PedidoController extends Pedido implements IApiUsable
         }
     
         foreach ($tareas as $tarea) {
-            if ($tarea->trabajadorAsignado === $nombreTrabajador) {
-                Tarea::FinalizarTarea($codigoPedido); 
+            if ($tarea->trabajadorAsignado == $nombreTrabajador) {
+                Tarea::FinalizarTarea($codigoPedido, $nombreTrabajador); 
                 Usuario::cambiarAEstadoLibre($nombreTrabajador);  
                 $payload = json_encode(["mensaje" => "Producto finalizado con éxito"]);
                 $response->getBody()->write($payload);
