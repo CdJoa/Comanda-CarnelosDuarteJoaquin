@@ -1,6 +1,5 @@
-# PHP + Slim Framework
+# Tp realizado en la cursada de Programación 3 UTN FRA
 
-Tp realizado en la cursada de Programación 3 UTN FRA
 
 # PHP + Slim Framework
 
